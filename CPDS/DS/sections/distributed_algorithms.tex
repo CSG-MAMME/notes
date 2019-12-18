@@ -1,0 +1,74 @@
+\section{Distributed Algorithms}
+
+\subsection{Time \& Global States}
+\subsubsection*{Time}
+\textbf{Logical Clocks}
+Implemented to capture the happened-before relation. They satisfy:
+\begin{enumerate}
+    \item If a and b are two events in the same process, a->b => C(a) < C(b)
+    \item If a sends a message to b => C(a) < C(b)
+\end{enumerate}
+
+\textbf{Lamport's logical clocks:}
+\begin{itemize}
+    \item Each process $P_i$ has a counter $C_i$
+    \item $C_i$ is updated using the following rules:
+    \begin{enumerate}
+        \item When an event happens at $P_i$ increment $C_i$ by one.
+        \item When $P_i$ sends a message, set $ts(m) = C_i$
+        \item When $P_i$ receives a message, set $C_i = \max(C_i, ts(m))$ and then increase $C_i$ by one. 
+    \end{enumerate}
+\end{itemize}
+Lamport's clocks do not guarantee that if $C(a) < C(b) \Rightarrow a -> b$.
+
+\textbf{Vector clocks:}
+\begin{itemize}
+    \item Each process $P_i$ has an array $VC_i [ 1, \dots, n ]$
+    \item It is updated as follows:
+    \begin{enumerate}
+        \item When $P_i$ sends a message $m$, it adds 1 to $VC_i[i]$ and sends $m$ with $ts(m) = VC_i$.
+        \item When $P_j$ receives a message from $P_i$, it updates each $VC_j[k]$ to $\max(VC_j[k], ts(m)[k])$ and increments $VC_j[j]$ by one.
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection*{Global States}
+A global state of the system is necessary for:
+\begin{itemize}
+    \item Failure Recovery
+    \item Detection of Properties: deadlocks, termination
+    \item Debugging
+\end{itemize}
+We define some concepts:
+\begin{enumerate}
+    \item The \textbf{history} of a process $p$ is the sequence of events ocurred at that process: $h(p) = <p_0, p_1, \dots>$ (either internal or message sending).
+    \item The \textbf{state} $i$ of process $p$ is p's history until event $i$: $s_i(p) = <p_0, \dots, p_i>$.
+    \item The \textbf{global history} is the union of all the individual histories.
+    \item A \textbf{cut} is the global history up to a specific event in each process history.
+    \item A cut is \textbf{consistent} if it contains all the \textit{happened-before} events. A consitent cut corresponds to a \textbf{consistent global state}.
+    \item A \textbf{run} is a total ordering of all events in a global history consistent with each local history.
+    \item A \textbf{linearization} or \textbf{consistent run} is a run consistent with the \textit{happened-before} relation.
+    \item We say state $S'$ is reachable from $S$ if there is a linearization such that $S$ preceeds $S'$.
+\end{enumerate}
+
+\textbf{Distributed Snapshot}
+
+\textbf{Global Predicates}
+
+Consistent global states form a lattice with reachability relation between sets.
+A \textbf{global state predicate}, $\varphi$ is a property that is either true or false for a global state.
+\begin{itemize}
+    \item A predicate is \textbf{stable} if once it becomes true, it remains true for all reachable states.
+    \item A predicate is \textbf{non-stable} if it can become true and then false.
+    \item A predicate $\varphi$ possibly happened: if it is true for any of the consistent states in the lattice.
+    \item A predicate $\varphi$ definately happened: if all paths from origin to end contain a consistent global state for which the predicate is true.
+\end{itemize}
+
+\subsection{Coordination and Agreement}
+
+\subsubsection*{Mutual Exclusion}
+
+\subsubsection*{Election Algorithms}
+
+\subsubsection*{Multicast Communications}
+
+\subsubsection*{Consensus}
