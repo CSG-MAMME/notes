@@ -1,0 +1,50 @@
+\section{Programming with CUDA}
+
+\subsection{GPU Architecture}
+\textbf{CPU vs GPU Architecture:}
+\begin{multicols}{2}
+    \begin{itemize}
+        \item  CPUs are designed for general purpose computing.
+        \item Large Caches to reduce impact of long latency.
+        \item GPUs are specialized for highly-parallel, compute-intensive computation.
+        \item Massive number of threads.
+    \end{itemize}
+\end{multicols}
+The testbed we use in CPDS is the MinoTauro cluster:
+\begin{lstlisting}[caption={Output of runing \texttt{nvidia-smi} in the cluster.}]
+Thu Dec 19 11:34:34 2019       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 418.67       Driver Version: 418.67       CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla K80           Off  | 00000000:04:00.0 Off |                    0 |
+| N/A   43C    P0    59W / 149W |      0MiB / 11441MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla K80           Off  | 00000000:05:00.0 Off |                    0 |
+| N/A   37C    P0    73W / 149W |      0MiB / 11441MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   2  Tesla K80           Off  | 00000000:85:00.0 Off |                    0 |
+| N/A   35C    P0    64W / 149W |      0MiB / 11441MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   3  Tesla K80           Off  | 00000000:86:00.0 Off |                    0 |
+| N/A   44C    P0    76W / 149W |      0MiB / 11441MiB |     92%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+\end{lstlisting}
+
+
+\subsection{CUDA: Devices, Kernel Definitions, and Offloading}
+
+\subsection{CUDA: Blocks, Threads, and Indexing}
+
+\subsection{CUDA: Accessing (global) Memory}
+
+\subsection{CUDA: Cooperating Threads and Shared Memory}

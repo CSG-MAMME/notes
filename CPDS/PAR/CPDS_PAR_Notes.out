@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Understanding Parallelism}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Definition of a Distributed System}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Challenges of Distributed Systems}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{OpenMP}{}% 4
+\BOOKMARK [1][-]{section.3}{MPI: Message Passing Interface}{}% 5
+\BOOKMARK [1][-]{section.4}{Programming with CUDA}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{GPU Architecture}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{CUDA: Devices, Kernel Definitions, and Offloading}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{CUDA: Blocks, Threads, and Indexing}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{CUDA: Accessing \(global\) Memory}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.5}{CUDA: Cooperating Threads and Shared Memory}{section.4}% 11
