@@ -1,5 +1,7 @@
 \section{Programming with CUDA}
 
+From now onwards, we will refer to the CPU and its memory as the \textbf{host} and to the GPU and it's memory as \textbf{device}.
+
 \subsection{GPU Architecture}
 \textbf{CPU vs GPU Architecture:}
 \begin{multicols}{2}
@@ -40,11 +42,112 @@ Thu Dec 19 11:34:34 2019
 +-----------------------------------------------------------------------------+
 \end{lstlisting}
 
+\textbf{GPU Architecture:}
+The GPU structure is divided in different SMs or \textbf{streaming multiprocessors}.
+Each SM at the same time has a number of cores:
+\begin{itemize}
+    \item General purpose load/store units: calculate memory addresses.
+    \item Special Function Units (SFU): execute complex instructions such as \textit{sin, cosine, ...}.
+\end{itemize}
+Separate address spaces between CPU (host memory) and GPU (device memory).
 
 \subsection{CUDA: Devices, Kernel Definitions, and Offloading}
+\textbf{Device Management}
+An application can query and select the GPUs it wants to use.
+Multiple threads may share a single device, and a single thread can manage multiple devices.
+A \textbf{kernel} is a function that runs on the device and is called from the host.
+\begin{itemize}
+    \item Definition using the keyword \texttt{\_\_global\_\_} in the prototype.
+    \item Invokation using triple brackets mark a \textbf{kernel launch} (call from host to device code).
+    \item The kernel launch is \textbf{asynchronous} (non-blocking).
+    \item In order to synchronize we must use \texttt{cudaDeviceSynchronize()}.
+\end{itemize}
+\begin{lstlisting}[style=cuda,caption={Example of a kernel definition and call.}]
+    __global__ void helloworld(void)
+    {
+    }
 
+    int main(void)
+    {
+        helloworld<<<1,1>>>();
+        cudaDeviceSynchronize();
+        return 0;
+    }
+\end{lstlisting}
 \subsection{CUDA: Blocks, Threads, and Indexing}
+As introduced before, the triple brackets \texttt{<<<N,M>>>} precede a kernel launch.
+In order to make use of the multiple streaming multiprocessors (SM) we replicate the kernels in different blocks:
+\begin{itemize}
+    \item We use \textbf{N} blocks, each block runs in one SM.
+    \item Blocks in a grid are assumed to work independently (no communication among them).
+    \item Each block has \textbf{M} threads.
+    \item Threads in the same block can synchronize via shared memory.
+    \item \textbf{\color{red}{CUDA only allows for synchronization among threads in the same block.}}.
+\end{itemize}
+\begin{lstlisting}[style=cuda,caption={Example of a kernel definition and call.}]
+    // Replication in different SM: N blocks of 1 thread
+    helloWorld<<<N, 1>>>();
+    // Replication in different threads inside one SM
+    helloWorld<<<1, M>>>():
+    // Inside the kernel, each instance can be uniquely identified
+    int index = threadIdx.x + blockIdx.x * M;
+\end{lstlisting}
+As a summary, functions in CUDA programs can be:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{p{.4\textwidth} p{.2\textwidth} p{.2\textwidth}}
+        \hline
+        & \textbf{Executed on the:} & \textbf{Callable from the:} \\[3pt] \hline \hline
+        \textbf{\texttt{\color{blue}{\_\_device\_\_} \color{black}float DeviceFunc()}} & device & device \\[3pt]
+        \textbf{\texttt{\color{blue}{\_\_global\_\_} \color{black}float KernelFunc()}} & device & host \\[3pt]
+        \textbf{\texttt{\color{blue}{\_\_host\_\_} \color{black}float HostFunc()}} & host & host \\[3pt] \hline \hline
+    \end{tabular}
+\end{table}
+In general, thread division in grids, blocks, and threads is specified by the user (with at most three dimensions).
+To do so, we make use of the \texttt{dim3} construct:
+\begin{lstlisting}[style=cuda,caption={Example of a kernel definition and call.}]
+    // Run ceil(n/256) blocks of 256 threads each:
+    // Potentially more than one block per SM
+    dim3 DimGrid(ceil(n/256), 1, 1);
+    dim3 DimBlock(256, 1, 1);
+    myKernel<<<DimGrid, DimBlock>>>();
+\end{lstlisting}
+Threads in a block are divided in 32-thread \textbf{warps} (scheduling units in SM).
+At any point in time, \textbf{\textcolor{red}{only one warp per SM is fetching and executing.}}
 
 \subsection{CUDA: Accessing (global) Memory}
+There is a different partial view of the device memory between device and host code:
+\begin{multicols}{2}
+    \begin{itemize}
+        \item Device code can read and write \textbf{thread registers}
+        \item Device code can read and write \textbf{grid global memory}
+        \item Host code can allocate data in \textbf{grid global memory}
+        \item Host code can transfer data between \textbf{host} and \textbf{grid}
+    \end{itemize}
+\end{multicols}
+Global variables in grid memory are to be declared using the \texttt{\_\_device\_\_} attribute.
+For dynamic memory allocation we use: \texttt{cudaMalloc} and \texttt{cudaFree}.
+To transfer data we use \texttt{cudaMemcpy}.
+\begin{lstlisting}[style=cuda,caption={Example of a kernel definition and call.}]
+int main()
+{
+    float a[N];
+    float *dev_a;
+    cudaMalloc(&dev_a, N * sizeof(float));
+    cudaMemcpy(dev_a, a, N * sizeof(float));
+    dim3 DimGrid(ceil(n/256), 1, 1);
+    dim3 DimBlock(256, 1, 1);
+    myKernel<<<DimGrid, DimBlock>>>(dev_a);
+    cudaFree(dev_a);
+}
+\end{lstlisting}
 
 \subsection{CUDA: Cooperating Threads and Shared Memory}
+
+As introduced before, threads within the same block may synchronize.
+In particular, \texttt{\_\_syncthreads()} forces all warps (all threads in a block) to wait until the rest have reached the same point.
+Each thread can:
+\begin{itemize}
+    \item R/W per-thread registers, per-block shared memory, and per-grid global memory.
+    \item Host code can R/W global grid memory.
+    \item Threads have shared memory within a block using the \texttt{\_\_shared\_\_} construct.

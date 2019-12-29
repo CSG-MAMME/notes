@@ -7,7 +7,7 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{tcolorbox}
-\newcommand{\lstfont}[1]{\color{#1}\scriptsize\ttfamily}
+\newcommand{\lstfont}[1]{\color{#1}\ttfamily}
 \lstdefinestyle{cuda}{
     language=[ANSI]C,
     showstringspaces=false,
@@ -21,7 +21,8 @@
     emph={
         cudaMalloc, cudaFree,
         __global__, __shared__, __device__, __host__,
-        __syncthreads,
+        __syncthreads, cudaDeviceSynchronize,
+        threadIdx, blockIdx, cudaMemcpy, dim3
     },
     emphstyle={\lstfont{green!60!white}},
     breaklines=true
@@ -43,7 +44,10 @@
     \newpage
 
     \input{sections/understanding_parallelism}
+    \newpage
     \input{sections/openmp}
+    \newpage
     \input{sections/mpi}
+    \newpage
     \input{sections/cuda}
 \end{document}
