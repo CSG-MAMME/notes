@@ -1,1 +1,105 @@
 \section{OpenMP}
+
+\subsection{OpenMP Basics}
+\subsubsection{OpenMP Overview}
+OpenMP is an API extension to the C, C++, and Fortran languages to write parallel programs for shared memory machines. It's main components are the following:
+\begin{itemize}
+    \item \textbf{Constructs:} create threads, share work, and synchronize.
+    \item \textbf{Library Routines:} control and query parallel execution environment.
+    \item \textbf{Environmnet Variables:} set the execution environment before the program execution starts.
+\end{itemize}
+
+\subsubsection{OpenMP Model}
+OpenMP uses a \textbf{fork-join} model:
+\begin{itemize}
+    \item The \textbf{master} thread spawns a team of threads that joins at the end of the parallel region.
+    \item Threads in the same team can \textbf{collaborate}.
+    \item It uses a relaxed memory model: threads can see different values for the same variable.
+    \item Memory consistency is only guaranteed at specific points.
+    \item Variables can be shared or private to each thread.
+\end{itemize}
+
+\subsubsection{Creating Threads and Accessing Data}
+
+\textbf{The Parallel Construct.}
+
+In order to create threads we use the \texttt{\#pragma omp parallel} construct.
+To determine the number of threads to be used for encountered parallel regions we use the \texttt{nthreads-var} ICV.
+It is a list, specifying the number of threads per nested parallelism level.
+We may use the if construct to add a condition under which we want to spawn (or not) parallelism: \texttt{\#pragma omp parallel if (condition)}.
+\textbf{Data-Sharing Attributes.}
+Variables can be: \texttt{shared}, \texttt{private}, or \texttt{firstprivate}.
+By default, they are \texttt{shared}.
+\begin{itemize}
+    \item \textbf{\texttt{shared:}} the variable inside the construct is the same than outside. All threads see the same variable, which may need synchronization.
+    \item \textbf{\texttt{private:}} if a variable is private, the variable inside the construct is a new variable with undefinded value. Hence, requires no synchronization.
+    \item \textbf{\texttt{firstprivate:}} same as private, but the value gets initialized to the original vlaue.
+\end{itemize}
+
+\subsubsection{Thread Synchronization}
+
+OpenMP is a shared memory model, hence threads communicate by sharing variables.
+Therefore, threads need to synchronize to impose some ordering in their sequence of actions.
+\begin{itemize}
+    \item \textbf{Thread Barrier:} threads cannot proceed past it untill all threads reach the barrier and all work is completed. The \texttt{parallel} construct has an implicit barrier at the end.
+    \item \textbf{Critical:} \texttt{\#pragma omp critical} provides a region of mutual exclusion. Only one thread can be working at any given time.
+    \item \textbf{Atomic:} \texttt{\#pragma omp atomic} ensures atomic access to a storage location. Usually faster than critical.
+    \item \textbf{Reduction:} all threads accumulate values into a common (shared) variable using one of the following operators \texttt{+,-,*,|,||,\&,\&\&,\^}.
+    \item \textbf{Locks:} lastly, the programmer may also use the pre-defined locks in the specification.
+\end{itemize}
+
+\subsubsection{Memory Consistency}
+
+As introduced before, OpenMP uses a relaxed memory cosnsitency model.
+The \textbf{flush} construct enforces consistency between the temporary view and memory for the variables in the list: \texttt{\#pragma omp flush (list)}.
+
+\subsection{Loop Parallelism in OpenMP}
+
+\subsubsection{The Worksharing Concept}
+Worksharing constructs divide the execution of a code region among members of a team.
+
+\subsubsection{Loop Worksharing}
+The \texttt{\#pragma omp for} construct spawns a parallel region (when merged as \texttt{\#pragma omp parallel for} from a for loop.
+The iterations are divided among the team, and the default data-sharing attribute is \texttt{shared}.
+The \texttt{schedule} clause determines which iterations are executed by each thread:
+\begin{itemize}
+    \item \texttt{static:} approximately $\#iterations / \#threads$ chunks assigned in round-robin fashion. In the static scheduling, we can also specify a custom chunk size.
+    \item \texttt{dynamic:} each thread dynamically grab chunks of $N$ iterations until all have been executed.
+\end{itemize}
+
+The \texttt{nowait} clause can be used to overlap the executin of two (or more) consecutive loops, it removes the implicit barrier at the end of the loop.
+To stack two for loops, the need to have the same static scheduling and the same number of iterations.
+
+Similarly, the \texttt{collapse} clause allows to distribute work from a set of $n$ nested loops (perfectly nested and rectangular iteration space).
+
+\subsubsection{The Single Construct}
+
+To give work to just one thread, we can se the \texttt{\#pragma omp single} construct.
+
+\subsection{Task Parallelism in OpenMP}
+
+\subsubsection{OpenMP Tasks}
+Tasks are work units whose execution may be deferred, threads can cooperate to execute them.
+Parallel regions create \textit{implicit} tasks.
+One thread that encounters a \texttt{task} construct, packages code and data, and creates a new \textit{explicit} task.
+One thread creates them, the rest cooperate to execute them (parallel + single).
+The following rules apply:
+\begin{itemize}
+    \item Global variables are \texttt{shared}.
+    \item Variables declared in the scope of the task are \texttt{private}.
+    \item The rest are \texttt{firstprivate}.
+\end{itemize}
+
+Using the \texttt{if} clause in the task definition, we can generate an \texttt{undeferred} task: if non-zero the current region is suspended, the task executed, and then resumed again.
+
+Using the \texttt{final} clause, the task and all the generated subtasks, are \texttt{included} tasks, executed sequentially right after the current running task finishes.
+
+Using the \texttt{mergeable} clause, the generated task is an included task and has no task context.
+
+\subsubsection{Task Synchronization}
+
+There are two types of task barriers:
+\begin{itemize}
+    \item \texttt{taskwait:} suspends the current task, waiting on completion of child tasks of the current task.
+    \item \texttt{taskgroup:} suspends the current task waiting on completion of child \textbf{and descendent} tasks.
+\end{itemize}
