@@ -1,0 +1,73 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage[linkcolor=blue]{hyperref}
+\usepackage[a4paper, left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\newcommand{\lstfont}[1]{\color{#1}\ttfamily}
+\lstdefinestyle{cuda}{
+    language=[ANSI]C,
+    showstringspaces=false,
+    backgroundcolor=\color{black!90},
+    basicstyle=\lstfont{white},
+    identifierstyle=\lstfont{white},
+    keywordstyle=\lstfont{magenta!40},
+    numberstyle=\lstfont{white},
+    stringstyle=\lstfont{cyan},
+    commentstyle=\lstfont{yellow!30},
+    emph={
+        cudaMalloc, cudaFree,
+        __global__, __shared__, __device__, __host__,
+        __syncthreads, cudaDeviceSynchronize,
+        threadIdx, blockIdx, cudaMemcpy, dim3
+    },
+    emphstyle={\lstfont{green!60!white}},
+    breaklines=true
+}
+\lstdefinestyle{omp}{
+    language=[ANSI]C,
+    showstringspaces=false,
+    backgroundcolor=\color{black!90},
+    basicstyle=\lstfont{white},
+    identifierstyle=\lstfont{white},
+    keywordstyle=\lstfont{magenta!40},
+    numberstyle=\lstfont{white},
+    stringstyle=\lstfont{cyan},
+    commentstyle=\lstfont{yellow!30},
+    emph={
+        cudaMalloc, cudaFree,
+        __global__, __shared__, __device__, __host__,
+        __syncthreads, cudaDeviceSynchronize,
+        threadIdx, blockIdx, cudaMemcpy, dim3
+    },
+    emphstyle={\lstfont{green!60!white}},
+    breaklines=true
+}
+
+
+%opening
+\title{\Large Master in Advanced Mathematics and Mathematical Engineering\\[1pt]
+\Huge Discrete and Algorithmic Geometry \\[8pt]
+\large Part 2}
+\author{\textbf{Carlos Segarra}}
+\date{\normalsize\today{}}
+
+\begin{document}
+
+    \maketitle
+
+    \tableofcontents
+
+    \newpage
+    \input{sections/matroids}
+    \input{sections/gale_duality}
+    \input{sections/triangulations}
+    \input{sections/grobner_bases}
+    \input{sections/grassmanian}
+    \input{sections/slack}
+
+
+\end{document}
