@@ -69,10 +69,20 @@
     \end{enumerate}
 \end{definition}
 
+\begin{definition}[Geometric Lattice of Flats]
+    The poset $L(M)$ of all flats of $M$, ordered by inclusion, is a \textit{geometric lattice} such that:
+    \begin{itemize}
+        \item Has meets, $x \wedge y$, and joins $x \vee y$.
+        \item It is \textit{(upper-)semimodular}, ranked, and satisfying
+            $$ r(x \vee y) + r(x \wedge y) \leq r(x) + r(y) $$
+        \item It is \textit{atomic}: every element is the join of the \textit{atoms}(cover, immediately greater element, of a minimal element) below it.
+    \end{itemize}
+\end{definition}
+
 \begin{definition}[Loops and Coloops]
     The \textit{loops} of a matroid $M$ are the set of elements that belong to no independent set.
 
-    The \textit{coloops} of a matroid $M$ are the set of elements that belong to e\textit{every} independent set.
+    The \textit{coloops} of a matroid $M$ are the set of elements that belong to e\textit{every} basis (can be added to any independent set, keeping it independent).
 \end{definition}
 
 \begin{definition}[Simple Matroids]
@@ -146,4 +156,30 @@ In a linear one, the sign of the circuit would correspond to the coeficients of 
 
 \subsection{Operations on Matroids}
 
-je
+\begin{definition}[Direct Sum]
+    Given matroids $M_1, M_2$ on the ground sets $E_1, E_2$, their \textit{direct sum} $M_1 \oplus M_2$ is the matroid on ground set $E_1 \sqcup E_2$ having independent sets
+    $$\I(M_1 \oplus M_2) = \I(M_1) \times \I(M_2)$$
+\end{definition}
+
+\begin{definition}[Deletion]
+    Given a matroid $M$ with ground set $E$ and $e \in E$ is not a coloop, the \textit{deletion} $M \backslash e$ is the matroid on $E - \{ e \}$ with independent sets
+    $$\I(M \backslash e) = \lbrace I \in \I(M) : e \not\in I \rbrace$$
+    We can express the \textit{restriction} in terms of \textit{deletion},
+    $$M|_A \coloneqq M \backslash (E - A)$$
+\end{definition}
+
+\begin{definition}[Contraction]
+    Given a matroid $M$ on $E$, and $e \in E$ not a loop, the \textit{contraction} $M / e$ is the matroid on ground set $E - \{ e \}$ with independent sets,
+    $$\I(M / e) = \{ I - \{ e\}: e \in I \in \I(M) \}$$
+\end{definition}
+
+\begin{definition}[Dual Matroid]
+    Given a matroid $M$ on ground set $E$, its \textit{dual} matroid $M^*$ is defined by its set of bases,
+    $$\B(M^*) = \{ E - B : B \in \B(M) \}$$
+    Some interesting properties of the dual matroid:
+    \begin{itemize}
+        \item $$(M \backslash e )^* = M^* / e^*$$
+        \item Loops are dual to coloops.
+        \item Circuits (minimal linear dependences) are dual to cocricuits (minimal value vectors with minimal support).
+    \end{itemize}
+\end{definition}
