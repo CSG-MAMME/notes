@@ -1,1 +1,149 @@
 \section{Matroids}
+
+\begin{itemize}
+    \item \textbf{Examples:} Vector and point configurations; algebraic matroids; graphical matroids
+    \item \textbf{Axiom subsystems:} Independent Sets; bases; circuits; cocircuits; rank functions; flats; hereditarily pure simplical complexes; universally shellable simplical complexes; greedily optimizable independent set systems
+    \item \textbf{Operations:} Direct Sum; Deletion; Contraction
+    \item \textbf{Oriented Matroids:} Axio systems; circuits; cocircuits
+\end{itemize}
+
+\subsection{Axiom Subsystems:}
+
+\begin{definition}[Indepndent Sets]
+    Let $E$ be a finite set called the \textit{ground set}.
+    Then $\I \subset 2^E$ forms the \textit{independent sets} of a \textit{matroid} $M$ on $E$ - $M = (E, \I)$ - if $\I$ satisfies:
+    \begin{enumerate}
+        \item[I1.] $\emptyset \in \I$
+        \item[I2.] $I_1 \in \I$ and $I_2 \subset I_1$ implies $I_2 \in \I$
+        \item[I3.] (\textit{Exchange Axiom}) $I_1, I_2 \in \I$ and $|I_2| > |I_1|$ implies there exists $e \in I_2 - I_1$ with $I_1 \cup \lbrace e \rbrace \in \I$.
+    \end{enumerate}
+\end{definition}    
+
+\begin{definition}[Bases]
+    The \textit{bases} of a \textit{matroid} $M$ on $E$, $\B(M)$, are the set of inclusion-maximal independent sets (adding another element makes them dependent, \textit{i.e.} not in $\I$).
+    They also satisfy two axioms:
+    \begin{enumerate}
+        \item[B1.] $\B \neq \emptyset$
+        \item[B2.] (\textit{Exchange Axiom}) Given $B_1, B_2 \in \B$ and $x \in B_1 - B_2$, there exists $y \in B_2 - B_1$ with
+            $$ (B1 - \{ x\} \cup \{ y\} \in \B$$
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Circuits]
+    The \textit{circuits} $\C$ of a matroid are the inclusion-minimal \textit{dependent} sets (\textit{i.e.} all proper subsets are independent).
+    They satisfy the following axioms:
+    \begin{enumerate}
+        \item[C1.] $\emptyset \not\in \C$
+        \item[C2.] $C_1, C_2 \in \C$ and $\C_1 \subset \C_2$ implies $C_1 = C_2$.
+        \item[C3.] (\textit{Circuit Elimination}) $C_1, C_2 \in \C$ with $C_1 \neq C_2$ and $e \in C_1 \cap C_2$ implies there exists $C_3 \in \C$ with $C_3 \subset (C_1 \cup C_2) - \{ e \}$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Rank Function]
+    Given a matroid $M$ on $E$, for $A \subset E$ we define the \textit{rank function}
+    $$ r(A) \coloneqq \max \left\lbrace |I|: I \in \I(M) \text{ and } I \subseteq A \right\rbrace.$$
+    It satisfies the rank axioms:
+    \begin{enumerate}
+        \item[R1.] $0 \leq r(A) \leq |A|$
+        \item[R2.] $A_1 \subset A_2$ implies $r(A_1) \leq r(A_2)$
+        \item[R3.] (\textit{Semimodularity}) $r(A \cup B) + r(A \cap B) \leq r(A) + r(B)$
+    \end{enumerate}
+    It is useful to recall that $\I = \{ I \subset E : r(I) = |I| \}$.
+\end{definition}
+
+\begin{definition}[Corank]
+    Given a matroid $M$ on $E$, $A \subset E$, and a rank function $r$, $corank(A) = r(E) - r(A)$.
+\end{definition}
+
+\begin{definition}[Closure and Flats]
+    The \textit{closure} operation
+    $$\bar{A} \coloneqq \{ e \in E : r(A \cup \{ e \}) = r(A) \}$$
+    We say a set $A \subset E$ is \textit{closed} if $A = \bar{A}$.
+    Closed sets are also colled \textit{flats}.
+    The closure operation satisfies the following axioms:
+    \begin{enumerate}
+        \item[CL1.] $A \subset \bar{A}$
+        \item[CL2.] $\bar{\bar{A}} = \bar{A}$
+        \item[CL3.] $A_1 \subseteq A_2$ implies $\bar{A_1} \subseteq \bar{A_2}$.
+        \item[CL4.] (\textit{Exchange}) If $x,y \in E$ and $A \subset E$ have $y \in \bar{A \cup \{x \}} - \bar{A}$ then $x \in \bar{A \cup \{ y \}}$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Loops and Coloops]
+    The \textit{loops} of a matroid $M$ are the set of elements that belong to no independent set.
+
+    The \textit{coloops} of a matroid $M$ are the set of elements that belong to e\textit{every} independent set.
+\end{definition}
+
+\begin{definition}[Simple Matroids]
+    A matroid is \textit{simple} if it has no:
+    \begin{itemize}
+        \item \textit{loops}: elements lying in no independent set.
+        \item \textit{parallel} elements: elements $e, e'$ with $e' \in \bar{\{ e \}}$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Simplical Complexes]
+    A set fulfulinig $I1$ and $I2$ is said to be an \textit{abstract simplical complex} on $E$.
+    We can replace $I3$ for various others:
+    \begin{enumerate}
+        \item[I3'] \textit{Pure Simplical Complexes:} a simplical complex is \textit{pure} (of dimension $r-1$) if every maximal face has the same cardinality $r$.
+            Then, it must hold for every subset $A \subset E$,
+            $$I|_A \coloneqq \{ I \in \I : I \subset A \}$$
+            is a \textit{pure} simplical complex.
+        \item[I3''] \textit{Shellable:} A simplical complex is \textit{shellable} if there exists an ordering $F_1, \dots, F_t$ of its \textit{facets}(maximal faces) having the following property: for each $j \geq 2$, the facet $F_j$ intersects the subcomplex generated by the previous ones in  a pure subcomplex of dimension 1.
+            Then it must hold:
+
+            \textit{Every ordering of the facets is a shelling ordering}.
+    \end{enumerate}
+\end{definition}
+
+\subsection{Motivating Examples:}
+
+\begin{definition}[Linear Matroid]
+    Let $V$ be a vector space, then a linear matroid in $V$ is defined by
+    \begin{equation*}
+        \begin{split}
+            E & = \lbrace \text{ finite subset of } V \rbrace \\
+            \I & = \lbrace \text{ linearly independent subsets of } E \rbrace
+        \end{split}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Graphical Matroid]
+    Let $G = (V, E)$ be a graph,
+    \begin{equation*}
+        \begin{split}
+            E & = \lbrace \text{ edges of } G \rbrace = E \\
+            \I & = \lbrace \text{ edges of forests of } \mathcal{G} \rbrace
+        \end{split}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Transversal Matroid]
+    Let $G = (U, V, E)$ be a bipartite graph,
+    \begin{equation*}
+        \begin{split}
+            E & = \lbrace \text{ bottom vertices of } G \rbrace = U \\
+            \I & = \lbrace \text{ endpoints of maximal matchings } \mathcal{V} \rbrace
+        \end{split}
+    \end{equation*}
+\end{definition}
+
+\subsection{Oriented Matroids}
+
+To obtain a \textit{signed} matroid from a regular one, we just have naturally add a sign.
+For instance, in a graphical matroid, the oriented matroid would correspond to the directed graph.
+
+For the signed circuits, we proceed similarly.
+In the graphical case, a plus or a minus would mean that the edge in the loop is traversed in its natural direction or the opposite one.
+In a linear one, the sign of the circuit would correspond to the coeficients of minimal linear dependences.
+
+\begin{definition}[Signed Covectors]
+    Signed covectors are evaluations of normal vectors.
+    \textit{I.e.} the sign relative to its peers induced by the hyperplane of the normal vector.
+\end{definition}
+
+\subsection{Operations on Matroids}
+
+je

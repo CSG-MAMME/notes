@@ -7,46 +7,22 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{tcolorbox}
-\newcommand{\lstfont}[1]{\color{#1}\ttfamily}
-\lstdefinestyle{cuda}{
-    language=[ANSI]C,
-    showstringspaces=false,
-    backgroundcolor=\color{black!90},
-    basicstyle=\lstfont{white},
-    identifierstyle=\lstfont{white},
-    keywordstyle=\lstfont{magenta!40},
-    numberstyle=\lstfont{white},
-    stringstyle=\lstfont{cyan},
-    commentstyle=\lstfont{yellow!30},
-    emph={
-        cudaMalloc, cudaFree,
-        __global__, __shared__, __device__, __host__,
-        __syncthreads, cudaDeviceSynchronize,
-        threadIdx, blockIdx, cudaMemcpy, dim3
-    },
-    emphstyle={\lstfont{green!60!white}},
-    breaklines=true
-}
-\lstdefinestyle{omp}{
-    language=[ANSI]C,
-    showstringspaces=false,
-    backgroundcolor=\color{black!90},
-    basicstyle=\lstfont{white},
-    identifierstyle=\lstfont{white},
-    keywordstyle=\lstfont{magenta!40},
-    numberstyle=\lstfont{white},
-    stringstyle=\lstfont{cyan},
-    commentstyle=\lstfont{yellow!30},
-    emph={
-        cudaMalloc, cudaFree,
-        __global__, __shared__, __device__, __host__,
-        __syncthreads, cudaDeviceSynchronize,
-        threadIdx, blockIdx, cudaMemcpy, dim3
-    },
-    emphstyle={\lstfont{green!60!white}},
-    breaklines=true
-}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
 
+\newtheorem{obs}{Observation}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition} % amsthm only
+\newtheorem{definition}{Definition}
+
+\newcommand{\I}{\mathscr{I}}
+\newcommand{\B}{\mathscr{B}}
+\newcommand{\C}{\mathscr{C}}
 
 %opening
 \title{\Large Master in Advanced Mathematics and Mathematical Engineering\\[1pt]
