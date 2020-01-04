@@ -16,9 +16,13 @@
 \BOOKMARK [3][-]{subsubsection.2.3.1}{OpenMP Tasks}{subsection.2.3}% 16
 \BOOKMARK [3][-]{subsubsection.2.3.2}{Task Synchronization}{subsection.2.3}% 17
 \BOOKMARK [1][-]{section.3}{MPI: Message Passing Interface}{}% 18
-\BOOKMARK [1][-]{section.4}{Programming with CUDA}{}% 19
-\BOOKMARK [2][-]{subsection.4.1}{GPU Architecture}{section.4}% 20
-\BOOKMARK [2][-]{subsection.4.2}{CUDA: Devices, Kernel Definitions, and Offloading}{section.4}% 21
-\BOOKMARK [2][-]{subsection.4.3}{CUDA: Blocks, Threads, and Indexing}{section.4}% 22
-\BOOKMARK [2][-]{subsection.4.4}{CUDA: Accessing \(global\) Memory}{section.4}% 23
-\BOOKMARK [2][-]{subsection.4.5}{CUDA: Cooperating Threads and Shared Memory}{section.4}% 24
+\BOOKMARK [2][-]{subsection.3.1}{Environment}{section.3}% 19
+\BOOKMARK [2][-]{subsection.3.2}{Barrier Synchronization}{section.3}% 20
+\BOOKMARK [2][-]{subsection.3.3}{Point-to-Point Communication}{section.3}% 21
+\BOOKMARK [2][-]{subsection.3.4}{Collective Communication}{section.3}% 22
+\BOOKMARK [1][-]{section.4}{Programming with CUDA}{}% 23
+\BOOKMARK [2][-]{subsection.4.1}{GPU Architecture}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.2}{CUDA: Devices, Kernel Definitions, and Offloading}{section.4}% 25
+\BOOKMARK [2][-]{subsection.4.3}{CUDA: Blocks, Threads, and Indexing}{section.4}% 26
+\BOOKMARK [2][-]{subsection.4.4}{CUDA: Accessing \(global\) Memory}{section.4}% 27
+\BOOKMARK [2][-]{subsection.4.5}{CUDA: Cooperating Threads and Shared Memory}{section.4}% 28

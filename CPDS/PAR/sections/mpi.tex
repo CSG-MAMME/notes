@@ -1,1 +1,19 @@
 \section{MPI: Message Passing Interface}
+
+\subsection{Environment}
+The following commands are used to bootstrap and interact with the MPI runtime:
+\begin{itemize}
+    \item \texttt{int MPI\_Init(\&argc, \&argv)}: call once before any other MPI routine.
+    \item \texttt{int MPI\_Comm\_size(MPI\_COMM\_WORLD, \&nproc)}: return the number of processes in the communicator group.
+    \item \texttt{int MPI\_Comm\_rank(MPI\_COMM\_WORLD, \&rank)}: return the process identifier in the communicator group.
+    \item \texttt{int MPI\_Finalize()}: terminates MPI processing, last MPI call.
+\end{itemize}
+
+\subsection{Barrier Synchronization}
+To syncrhonize among running processes, we must use a barrier:
+
+\texttt{int MPI\_Barrier(MPI\_Comm comm)}: blocks each process in the communicator until all processes have called it.
+
+\subsection{Point-to-Point Communication}
+
+\subsection{Collective Communication}

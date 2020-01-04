@@ -27,6 +27,7 @@ In order to create threads we use the \texttt{\#pragma omp parallel} construct.
 To determine the number of threads to be used for encountered parallel regions we use the \texttt{nthreads-var} ICV.
 It is a list, specifying the number of threads per nested parallelism level.
 We may use the if construct to add a condition under which we want to spawn (or not) parallelism: \texttt{\#pragma omp parallel if (condition)}.
+
 \textbf{Data-Sharing Attributes.}
 Variables can be: \texttt{shared}, \texttt{private}, or \texttt{firstprivate}.
 By default, they are \texttt{shared}.
@@ -65,10 +66,11 @@ The \texttt{schedule} clause determines which iterations are executed by each th
 \begin{itemize}
     \item \texttt{static:} approximately $\#iterations / \#threads$ chunks assigned in round-robin fashion. In the static scheduling, we can also specify a custom chunk size.
     \item \texttt{dynamic:} each thread dynamically grab chunks of $N$ iterations until all have been executed.
+    \item \texttt{guided:} variant of \texttt{dynamic}. The size of the chunk decreases as threads grab iterations.
 \end{itemize}
 
 The \texttt{nowait} clause can be used to overlap the executin of two (or more) consecutive loops, it removes the implicit barrier at the end of the loop.
-To stack two for loops, the need to have the same static scheduling and the same number of iterations.
+To stack two for loops, they need to have the same \textbf{static scheduling} and the same \textbf{iteration space}.
 
 Similarly, the \texttt{collapse} clause allows to distribute work from a set of $n$ nested loops (perfectly nested and rectangular iteration space).
 
@@ -90,9 +92,9 @@ The following rules apply:
     \item The rest are \texttt{firstprivate}.
 \end{itemize}
 
-Using the \texttt{if} clause in the task definition, we can generate an \texttt{undeferred} task: if non-zero the current region is suspended, the task executed, and then resumed again.
+Using the \texttt{if} clause in the task definition, we can generate an \texttt{undeferred} task: if zero the current region is suspended, the task executed, and then resumed again.
 
-Using the \texttt{final} clause, the task and all the generated subtasks, are \texttt{included} tasks, executed sequentially right after the current running task finishes.
+Using the \texttt{final} clause, the task and all the generated subtasks, are \texttt{included} tasks, executed sequentially without creating the task context.
 
 Using the \texttt{mergeable} clause, the generated task is an included task and has no task context.
 
