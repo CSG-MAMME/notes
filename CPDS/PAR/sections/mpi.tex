@@ -10,10 +10,39 @@ The following commands are used to bootstrap and interact with the MPI runtime:
 \end{itemize}
 
 \subsection{Barrier Synchronization}
-To syncrhonize among running processes, we must use a barrier:
+To synchronize among running processes, we must use a barrier:
 
 \texttt{int MPI\_Barrier(MPI\_Comm comm)}: blocks each process in the communicator until all processes have called it.
 
 \subsection{Point-to-Point Communication}
 
+\subsubsection*{Blocking}
+Return from the procedure indicates the user is allowed to reuse the resources specified in the call:
+\begin{itemize}
+    \item \texttt{MPI\_Send}: performs a blocking send operation.
+    \item \texttt{MPI\_Recv}: performs a blocking receive operation.
+    \item \texttt{MPI\_Sendrecv}: performs a blocking exchange.
+\end{itemize}
+
+\subsection*{Non-Blocking}
+The procedure may return before the operation completes, and before the user is allowed to reuse resources specified in the cell.
+\begin{itemize}
+    \item \texttt{MPI\_Isend}: performs a non-blocking send, uses an identifier for later enquiry to wait.
+    \item \texttt{MPI\_Irecv}: performs a non-blocking receive operation.
+    \item \texttt{MPI\_Wait}: waits for non-blocking operation to complete.
+    \item \texttt{MPI\_Test}: test for the completion of non-blocking send or receive.
+\end{itemize}
+
 \subsection{Collective Communication}
+If all processes in a process group need to invoke the procedure.
+\begin{itemize}
+    \item \texttt{MPI\_Bcas}: broadcasts a message from a root to all processes in a communicator.
+    \item \texttt{MPI\_Reduce}: applies reduction and sends it to root.
+        It can be applied to both scalars and arrays.
+    \item \texttt{MPI\_Scatter}: distribute chunks of a buffer among all processes in the group.
+        Using \texttt{MPI\_Scatterv} we can distribute chunks of different size.
+    \item \texttt{MPI\_Gather}: inverse operation to scatter.
+        Collect individual messages from each process and store them in rank order.
+    \item \texttt{MPI\_Allgather}: similar to gather, except that all processes receive the result.
+    \item \texttt{MPI\_Alltoall}: sends a distinct message from each process to every other process.
+\end{itemize}
