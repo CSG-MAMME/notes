@@ -103,6 +103,7 @@ As a summary, functions in CUDA programs can be:
         \textbf{\texttt{\color{blue}{\_\_host\_\_} \color{black}float HostFunc()}} & host & host \\[3pt] \hline \hline
     \end{tabular}
 \end{table}
+
 In general, thread division in grids, blocks, and threads is specified by the user (with at most three dimensions).
 To do so, we make use of the \texttt{dim3} construct:
 \begin{lstlisting}[style=cuda,caption={Example of a kernel definition and call.}]

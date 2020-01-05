@@ -1,4 +1,4 @@
-\section{Oriented Matroid and Gale Duality}
+\section{Polytopes, Oriented Matroid, and Gale Duality}
 
 \begin{itemize}
     \item Oriented Matroid / Gale Duality Construct
@@ -28,6 +28,100 @@
     This family includes a line segment, triangle, and tetrahedron.
 \end{definition}
 
+\begin{definition}[Affine Combination, Hull, and Space]
+    Affine spaces are closely related to linear vector spaces in the following way:
+    \begin{enumerate}
+        \item An \textit{affine combination} of vectors $\pmb{p_1}, \dots, \pmb{p_t} \in \R^d$ is a combination of the form $\sum_{i=1}^t \lambda_i \pmb{p_i}$ such that $\sum_{i=1}^t \lambda_i = 1$.
+        \item The \textit{affine hull} of $\pmb{p_1}, \dots, \pmb{p_t}$, aff$(\{\pmb{p_1}, \dots, \pmb{p_t}\})$, is the set of all affine combinations of $\pmb{p_1}, \dots, \pmb{p_t}$.
+        \item An \textit{affine space} is any set of the form $\lbrace x \in \R^d : Ax = b \rbrace$. It is the translate of the vector space $\lbrace x \in \R^d : Ax = 0 \rbrace$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Dimension]
+    Using the previous definitions, we may define the dimension of an affine space and a polytope as follows:
+    \begin{enumerate}
+        \item The \textit{dimension} of an affine space is the dimension of the linear vector space that it is a translate of.
+        \item The \textit{dimension} of a polytope $P$ is the dimension of it's affine hull.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Face of a Polytope]
+    The intersection of a polytope $P \subset \R^d$ with a supporting hyperplane of $P$ is called a \textit{face} of $P$.
+
+    The \textit{dimension} of a face is the dimension of the face as a polytope.
+    \begin{itemize}
+        \item $k$-dimensional faces are called $k$-faces.
+        \item $0$-faces are called \textit{vertices}.
+        \item $1$-faces are called \textit{edges}.
+        \item $(\text{dim}(P) - 1)$-faces are called \textit{facets}.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Simple and Simplicial Polytopes]
+    A $d$-dimensional polytope $P$ is \textit{simple} if every vertex of $P$ is incident to $d$ edges of $P$, or equivalently, every vertex of $P$ lies on precisely $d$ facts of $P$.
+
+    A $d$-dimensional polytope $P$ is \textit{simplicial} if for $0 \leq k \leq \text{dim}(P) - 1$, each $k$ face of $P$ is combinatorially isomorphic to a $k$-simplex.
+\end{definition}
+
 \subsection{Radon Partition, Gale Diagrams, and Cyclic Polytopes}
+
+The cyclic polytope $C_d(n)$ is a simplical $d$-polytope with $n$ vertices.
+It provides an upper bound on face numbers of simplicial polytopes with the same dimension and number of vertices.
+\begin{definition}[Cyclic Polytope]
+    The $d$-dimensional \textit{cyclic polytope} with $n$ vertices is:
+    $$C_d(n) \coloneqq \text{conv}(\{\phi(t_1), \dots,  \phi(t_n)\})$$
+    where $\phi : \R \mapsto \R^d, t \mapsto (t, t^2, \dots, t^d)$.
+\end{definition}
+
+\begin{obs}
+    The facets of $C_d(n)$ satisfy Gale's evenness condition:
+    $$ S = \lbrace i_1, \dots, i_d \rbrace \subset [n] \text{ indexes a facet } \Leftrightarrow \forall i,j \not\in S \text{ and } i < j, 2 \text{ divides } |\{k : k \in S, i < k < j\}|$$
+\end{obs}
+
+\begin{theorem}[Uppber Bound Theorem]
+    Let $P$ be any $d$-dimensional simplicial polytope with $n$ vertices. Then $f_i(P) \leq f_i(C_d(n))$ for every $0 \leq i \leq d-1$.
+\end{theorem}
+
+\begin{definition}[k-neighbourness]
+    A polytope $P$ is \textit{$k$-neighborly} if any set of $k$ or less vertices of $P$ is the vertex set of a face of $P$.
+\end{definition}
+
+\textbf{Gale Transform}
+
+Let $A = (\pmb{a_1}, \dots, \pmb{a_n})$ be a linear matroid of points in $\R^d$.
+Now consider, $\bar{A} = \left( \begin{array}{c c c} \pmb{a_1} & \dots & \pmb{a_n} \\ 1 & \dots & 1 \end{array} \right) = (\bar{\pmb{a_1}}, \dots, \bar{\pmb{a_n}})$ vectors in $\R^{d+1}$.
+Note that the latter are \textit{affinely independent} iff the former are \textit{linearly independent}.
+\begin{definition}[Linear and Affine Value and Dependences]
+    Given $A$, and $\bar{A}$ we define the following:
+    \begin{itemize}
+        \item $\text{LinVal}(\bar{A}) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) | f: \R^{d+1} \longrightarrow \R \text{ linear} \}$
+        \item $\text{LinDep}(\bar{A}) = \{ \alpha \in \R^{n+1} | \alpha_1 \pmb{\bar{a_1}} + \dots + \alpha_n \pmb{\bar{a_n}} = 0 \}$
+        \item $\text{AffVal}(A) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) | f: \R^{d} \longrightarrow \R \text{ affine} \}$
+        \item $\text{AffDep}(A) = \{ \alpha \in \R^n | \alpha_1 \pmb{a_1} + \dots + \alpha_n \pmb{a_n} = 0, \alpha_1 + \dots + \alpha_n = 0 \}$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Gale's Transform and Gale's Diagram]
+    Let $B = \{ \pmb{b_1}, \dots, \pmb{b_n} \} \subset \R^{n -d -1}$ be the $n$ ordered vectors such that $\bar{A} B^T = 0$ ($B^T$ is a basis for $\text{ker}(A)$).
+    Then $B$ is called a \textit{Gale Transform} of $A$.
+    The associated \textit{Gale Diagram} is the vector configuration drawn in $\R^{n -d -1}$.
+\end{definition}
+
+\begin{lemma}[Radon's Lemma]
+    Let $A$ be a set of $d+1$ points in $\R^d$. Then, there exists two disjoint subsets $A_1, A_2 \subset A$ s.t conv$(A_1) \cap \text{conv}(A_2) \neq \emptyset$.
+\end{lemma}
+
+The main goal of the Gale transform is to read the face lattice of a $d$-polytope $P$ from its Gale transfrom.
+To do so, we will use the two following statements:
+
+\begin{lemma}
+    Let $P = \text{conv}(\{\pmb{a_1}, \dots, \pmb{a_n}\})$. Then $J \subseteq [n]$ is a face of $P$ if and only if
+    $$\text{conv}(\{\pmb{a_j} : j \in [n] \backslash J \} \cap \text{aff}(\{\pmb{a_j} : j \in J \}) = \emptyset$$
+\end{lemma}
+\begin{theorem}
+    Let $P = \text{conv}(\{\pmb{a_1}, \dots, \pmb{a_n}\}), \pmb{a_i} \in \R^{d}$, and $B$ its gale transfrom.
+    Then,
+    $$J \text{ is a face of } P \Leftrightarrow J = [n] \text{ or } \pmb{0} \in \text{relint}(\text{conv}(\{b_k : k \not\in J \}))$$
+\end{theorem}
 
 \subsection{Asymptotic Upper Bound Theorem}
