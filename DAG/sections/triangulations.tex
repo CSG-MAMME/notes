@@ -1,9 +1,103 @@
 \section{Regular Triangulations and the Secondary Polytope}
 
-\begin{itemize}
-    \item Regular Polyhedral Subdivisions from projections of lower faces
-    \item The union and intersection properties
-    \item The refinement partial order
-    \item The GKZ vector of a triangulation
-    \item The secondary polytope and its vertices and affine hull
-\end{itemize}
+\subsection{Triangulations of Point Configurations}
+
+Let us consider the following graded point configuration in $\R^{d + 1}$,
+$$\A = \left\{ \left( \begin{array}{c} \pmb{a}_1 \\ 1 \end{array} \right), \dots, \left( \begin{array}{c} \pmb{a}_n \\ 1 \end{array} \right) \right\} \subset \R^{d+1}$$
+where conv$(\A)$ is a $d$-polytope living in $\R^{d+1}$.
+
+\begin{definition}[Face of the Graded Point Configuration]
+    A subset $\A_{\sigma}$ of $\A$ is called a \textit{face} of $\A$ if the elements index a face of the polytope conv$(\A)$.
+\end{definition}
+
+\begin{definition}[$k$-simplex]
+    We say that $\sigma$, $\A_{\sigma}$, is a \textit{$k$-simplex} if dim$(\sigma) = k$ and $|\sigma| = k + 1$.
+\end{definition}
+
+\begin{definition}[Polyhedral Subdivision]
+    A \textit{(Polyhedral) subdivision}, $\Delta = \{\sigma_1, \dots, \sigma_t \}$, of $\A$ is a collection of subsets $\sigma_i \subseteq [n], i =1, \dots, t$ such that:
+    \begin{enumerate}
+        \item dim$(\sigma_i) = d$ for all $i = 1, \dots, t$
+        \item $\cup_{\sigma_i \in \Delta} \text{conv}(\A_{\sigma_i}) = \text{conv}(\A)$
+        \item $\text{conv}(\A_{\sigma_i}) \cap \text{conv}(\A_{\sigma_j})$ is a face of both polytopes
+    \end{enumerate}
+    If further, all $\sigma_i$ are $(d-1)$-simplices, then $\Delta$ is a \textit{triangulation} of $\A$.
+\end{definition}
+
+\begin{definition}[Subdivision Refinement]
+    Given two subdivisions $\Delta_1$ and $\Delta_2$, we say $\Delta_1$ refines $\Delta_2$ ($\Delta_1 < \Delta_2$) if $\forall \sigma_1 \in \Delta_1, \exists \sigma_2 \in \Delta_2$ such that $\sigma_1 \subseteq \sigma_2$.
+\end{definition}
+
+\textbf{Regular Subdivisons}
+
+Let us now move our initial point configuration by a weight vector, $\omega$,
+$$\A^{\omega} = \left\{ \left( \begin{array}{c} \pmb{a}_1 \\ \omega_1 \end{array} \right), \dots, \left( \begin{array}{c} \pmb{a}_n \\ \omega_n \end{array} \right) \right\} \subset \R^{d+1}$$
+and consider its convex hull $P^{\omega} \subset \R^{d+1}$.
+Projecting the lower faces of the convex hull back onto $\A$ induces a subdivision of $\A$, denoted as $\Delta_{\omega}$, and known as the \textbf{\textit{regular subdivision}} of $\A$ with respect to $\omega$.
+
+\begin{definition}[Faces of the Regular Subdivision]
+    A subset $\sigma \subseteq [n]$ is a face of the regular subdivision $\Delta_{\omega}$ of $\A$ if and only if there exists a vector $\pmb{y} \in \R^d$ such that:
+    \begin{equation*}
+        \begin{split}
+             \pmb{a}_j \cdot \pmb{y} = \omega_j & \quad \text{for all  } j \in \omega \\
+             \pmb{a}_j \cdot \pmb{y} < \omega_j & \quad \text{for all  } j \not\in \omega
+        \end{split}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Polyhedral Cone]
+    A \textit{polyhedral cone} $K \subseteq \R^d$ is of the form,
+    $$K = \{x \in \R^d : M \cdot x \geq 0 \} \text{  for  } M \in R^{n\times d} = \{ N \cdot y : y \geq 0 \} \text{  for  } N \in \R^{n \times d}$$
+\end{definition}
+
+\begin{definition}[Cone Complex - Polyhedral Fan]
+    A \textit{cone complex (or polyhedral fan)} $\Sigma$ is a collection of cones such that the intersection of any two is a face of both.
+\end{definition}
+
+\begin{definition}[Outer (Inner) Normal Cone]
+    Let $P \subset \R^d$ be a polyhedron and $F$ be a face of $P$.
+    Then, the \textit{outer normal cone} of $P$ at $F$ is the cone,
+    $$\mathcal{N}_P(F) = \{ \pmb{c} \in \R^d : F = \text{face}_{\pmb{c}}(P)\}$$
+    The inner normal cone of $P$ at $F$ is the negative of the outer normal cone.
+\end{definition}
+
+\begin{theorem}[Lee91]
+    Let $\Delta = \{\sigma_1, \dots, \sigma_t \}$ be a subdivision of $\A$ and $B$ be a Gale transform of $\A$.
+    Then $\Delta$ is regular if and only if,
+    $$\bigcap_{i=1}^t \text{relint}(\text{cone}(B_{\bar{\sigma}_i})) \neq \emptyset$$
+\end{theorem}
+
+\subsection{The Secondary Polytope}
+
+\begin{definition}[Secondary Cell]
+    The \textit{secondary cell} of a regular subdivision $\Delta$ of $\A$ is the open cone,
+    $$\{ \omega : \text{ there exists } \pmb{z} = \omega B, \pmb{z} \in \bigcap_{i = 1}^t \text{relint}(\text{cone}(B_{\bar{\sigma}_i})) \} \subseteq \R^n$$
+    The closure of the secondary cell in $\R^n$ is the \textit{secondary cone} of $\Delta$, denoted as $\mathcal{C}_{\Delta}$.
+\end{definition}
+
+\begin{theorem}
+    The secondary cell of a regular subdivision $\Delta$ is precisely the set of all weight vectors $\omega \in \R^n$ such that $\Delta = \Delta_{\omega}$.
+\end{theorem}
+
+\subsection{The GKZ Vector of a Triangulation}
+
+\begin{definition}[Normalized Volume]
+    Let $\sigma$ be a simplex in a triangulation of $\A$.
+    The \textit{normalized volume} of the simplex $\sigma$, vol$(\sigma)$, is the absolute value of the determinant of $\A_{\sigma}$ divided by the greatest common divisor of the maximal minors of $A$.
+\end{definition}
+
+\begin{definition}[GKZ Vector of a Triangulation]
+    The \textit{GKZ vector of a triangulation} $\Delta$ of $\A$ is the vector
+    $$\phi_{\Delta} \coloneqq \sum_{i=1}^n \left( \sum \{\text{vol}(\tau) : \tau \in \Delta \text{ and } i \in \tau \} \right) \cdot \pmb{e}_i \in \R^n$$
+\end{definition}
+
+\begin{definition}[Secondary Polytope]
+    A \textit{secondary polytope} of $\A$ is any polytope whose inner normal fan equals the secondary fan $\mathcal{F}(\A)$.
+\end{definition}
+
+\begin{theorem}
+    The polytope
+    $$ \Sigma(\A) \coloneqq \text{conv}(\{ \phi_{\Delta} : \Delta \text{ a triangulation of } \A \} )$$
+    is a secondary polytope of $\A$.
+    The vertices of $\Sigma(A)$ are the GKZ vectors of the regular triangulations of $\A$.
+\end{theorem}
