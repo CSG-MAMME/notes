@@ -42,7 +42,7 @@ By default, they are \texttt{shared}.
 OpenMP is a shared memory model, hence threads communicate by sharing variables.
 Therefore, threads need to synchronize to impose some ordering in their sequence of actions.
 \begin{itemize}
-    \item \textbf{Thread Barrier:} threads cannot proceed past it untill all threads reach the barrier and all work is completed. The \texttt{parallel} construct has an implicit barrier at the end.
+    \item \textbf{Thread Barrier:} threads cannot proceed past it until all threads reach the barrier and all work is completed. The \texttt{parallel} construct has an implicit barrier at the end.
     \item \textbf{Critical:} \texttt{\#pragma omp critical} provides a region of mutual exclusion. Only one thread can be working at any given time.
     \item \textbf{Atomic:} \texttt{\#pragma omp atomic} ensures atomic access to a storage location. Usually faster than critical.
     \item \textbf{Reduction:} all threads accumulate values into a common (shared) variable using one of the following operators \texttt{+,-,*,|,||,\&,\&\&,\^}.
@@ -51,7 +51,7 @@ Therefore, threads need to synchronize to impose some ordering in their sequence
 
 \subsubsection{Memory Consistency}
 
-As introduced before, OpenMP uses a relaxed memory cosnsitency model.
+As introduced before, OpenMP uses a relaxed memory consistency model.
 The \textbf{flush} construct enforces consistency between the temporary view and memory for the variables in the list: \texttt{\#pragma omp flush (list)}.
 
 \subsection{Loop Parallelism in OpenMP}
@@ -69,14 +69,14 @@ The \texttt{schedule} clause determines which iterations are executed by each th
     \item \texttt{guided:} variant of \texttt{dynamic}. The size of the chunk decreases as threads grab iterations.
 \end{itemize}
 
-The \texttt{nowait} clause can be used to overlap the executin of two (or more) consecutive loops, it removes the implicit barrier at the end of the loop.
+The \texttt{nowait} clause can be used to overlap the execution of two (or more) consecutive loops, it removes the implicit barrier at the end of the loop.
 To stack two for loops, they need to have the same \textbf{static scheduling} and the same \textbf{iteration space}.
 
 Similarly, the \texttt{collapse} clause allows to distribute work from a set of $n$ nested loops (perfectly nested and rectangular iteration space).
 
 \subsubsection{The Single Construct}
 
-To give work to just one thread, we can se the \texttt{\#pragma omp single} construct.
+To give work to just one thread, we can use the \texttt{\#pragma omp single} construct.
 
 \subsection{Task Parallelism in OpenMP}
 

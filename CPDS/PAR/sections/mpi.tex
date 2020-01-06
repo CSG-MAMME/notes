@@ -25,7 +25,7 @@ Return from the procedure indicates the user is allowed to reuse the resources s
 \end{itemize}
 
 \subsection*{Non-Blocking}
-The procedure may return before the operation completes, and before the user is allowed to reuse resources specified in the cell.
+The procedure may return before the operation completes, and before the user is allowed to reuse resources specified in the call.
 \begin{itemize}
     \item \texttt{MPI\_Isend}: performs a non-blocking send, uses an identifier for later enquiry to wait.
     \item \texttt{MPI\_Irecv}: performs a non-blocking receive operation.
@@ -36,7 +36,7 @@ The procedure may return before the operation completes, and before the user is 
 \subsection{Collective Communication}
 If all processes in a process group need to invoke the procedure.
 \begin{itemize}
-    \item \texttt{MPI\_Bcas}: broadcasts a message from a root to all processes in a communicator.
+    \item \texttt{MPI\_Bcast}: broadcasts a message from a root to all processes in a communicator.
     \item \texttt{MPI\_Reduce}: applies reduction and sends it to root.
         It can be applied to both scalars and arrays.
     \item \texttt{MPI\_Scatter}: distribute chunks of a buffer among all processes in the group.
