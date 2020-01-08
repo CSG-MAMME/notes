@@ -60,7 +60,7 @@ The \textbf{flush} construct enforces consistency between the temporary view and
 Worksharing constructs divide the execution of a code region among members of a team.
 
 \subsubsection{Loop Worksharing}
-The \texttt{\#pragma omp for} construct spawns a parallel region (when merged as \texttt{\#pragma omp parallel for} from a for loop.
+The \texttt{\#pragma omp for} construct spawns a parallel region (when merged as \texttt{\#pragma omp parallel for}) from a for loop.
 The iterations are divided among the team, and the default data-sharing attribute is \texttt{shared}.
 The \texttt{schedule} clause determines which iterations are executed by each thread:
 \begin{itemize}

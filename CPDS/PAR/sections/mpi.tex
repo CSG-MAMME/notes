@@ -19,8 +19,8 @@ To synchronize among running processes, we must use a barrier:
 \subsubsection*{Blocking}
 Return from the procedure indicates the user is allowed to reuse the resources specified in the call:
 \begin{itemize}
-    \item \texttt{MPI\_Send}: performs a blocking send operation.
-    \item \texttt{MPI\_Recv}: performs a blocking receive operation.
+    \item \texttt{MPI\_Send(buf, count, type, dest, tag, MPI\_Comm)}: performs a blocking send operation.
+    \item \texttt{MPI\_Recv(buf, count, type, source, tag, MPI\_Comm, MPI\_Status)}: performs a blocking receive operation.
     \item \texttt{MPI\_Sendrecv}: performs a blocking exchange.
 \end{itemize}
 
@@ -36,8 +36,8 @@ The procedure may return before the operation completes, and before the user is 
 \subsection{Collective Communication}
 If all processes in a process group need to invoke the procedure.
 \begin{itemize}
-    \item \texttt{MPI\_Bcast}: broadcasts a message from a root to all processes in a communicator.
-    \item \texttt{MPI\_Reduce}: applies reduction and sends it to root.
+    \item \texttt{MPI\_Bcast(buf, count, type, root, MPI\_Comm)}: broadcasts a message from a root to all processes in a communicator.
+    \item \texttt{MPI\_Reduce(sendbuf, recvbuf, count, type, op, root, MPI\_Comm)}: applies reduction and sends it to root.
         It can be applied to both scalars and arrays.
     \item \texttt{MPI\_Scatter}: distribute chunks of a buffer among all processes in the group.
         Using \texttt{MPI\_Scatterv} we can distribute chunks of different size.

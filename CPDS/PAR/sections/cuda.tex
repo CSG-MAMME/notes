@@ -90,7 +90,7 @@ In order to make use of the multiple streaming multiprocessors (SM) we replicate
     // Replication in different threads inside one SM
     helloWorld<<<1, M>>>():
     // Inside the kernel, each instance can be uniquely identified
-    int index = threadIdx.x + blockIdx.x * M;
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
 \end{lstlisting}
 As a summary, functions in CUDA programs can be:
 \begin{table}[h!]
@@ -133,13 +133,17 @@ To transfer data we use \texttt{cudaMemcpy}.
 int main()
 {
     float a[N];
-    float *dev_a;
+    float result[N];
+    float *dev_a, *dev_result;
     cudaMalloc(&dev_a, N * sizeof(float));
-    cudaMemcpy(dev_a, a, N * sizeof(float));
+    cudaMalloc(&dev_result, N * sizeof(float));
+    cudaMemcpy(dev_a, a, N * sizeof(float), cudaMemcpyHostToDevice);
     dim3 DimGrid(ceil(n/256), 1, 1);
     dim3 DimBlock(256, 1, 1);
-    myKernel<<<DimGrid, DimBlock>>>(dev_a);
+    myKernel<<<DimGrid, DimBlock>>>(dev_a, dev_result);
+    cudaMemcpy(result, dev_result, N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaFree(dev_a);
+    cudaFree(dev_result);
 }
 \end{lstlisting}
 

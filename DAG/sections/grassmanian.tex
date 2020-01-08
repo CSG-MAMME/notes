@@ -7,4 +7,51 @@
 
 \subsection{The Complete Flag Variety}
 
-\subsection{Quadratic Pl\"ucker Relations}
+Let $\mathbb{K}$ be an algebraically closed field.
+
+\begin{definition}[Complete Flag]
+    A \textit{complete flag} in the vector space $\K^n$ is a chain
+    $$V_{\bullet} : V_{0} \subset V_1 \subset \dots \subset V_{n-1} \subset V_{n} $$
+    of vector subspaces of $\K^n$ such that $\text{dim}_{\K}(V_d) = d$.
+    The \textit{flag variety}, $\mathcal{Fl}_n$ is the set of all complete flags in $\K^n$.
+\end{definition}
+
+Every $d$-dimensional subspace of $\K^n$ can be expressed as the row span of some $d \times n$ matrix $\Theta$ with entries $\theta_{i,j}$ in $\K$.
+Such a matrix must have rank $d$.
+Hence there are $d$ columns of $\Theta$ forming a square matrix with nonzero determinant.
+
+\begin{definition}[Minor]
+    The determinant of a square $r \times r$ submatrix inside of $\Theta$ is called a \textit{minor} of size $r$.
+    The $r$-minor is \textit{maximal} if $r = d$ is as large as possible.
+\end{definition}
+
+\begin{proposition}
+    The list
+    $$(\det (\Theta_{\sigma}) \: | \: \sigma \subseteq [n] \text{ and } |\sigma| = d)$$
+    of maximal minors identifies, up to scale, the row span of $\Theta$ uniquely.
+    In particular, $\Theta'$ has the same row span as $\Theta$ if and only if there exists a nonzero scalar $\gamma \in \K$ such that
+    $$\det(\Theta_{\sigma}) = \gamma \det(\Theta_{\sigma}') \quad \text{ for all } \quad \sigma \subseteq [n] \text{ and } |\sigma| = d$$
+\end{proposition}
+
+\begin{definition}[Pl\"ucker Coordinates]
+    For any subset $\sigma \subseteq [n]$ and any $n \times n$ matrix $\Theta$, let $\Theta_{\sigma}$ be the submatrix with rows $1, \dots, d$ and columns $\sigma_1, \dots, \sigma_{d}$, where $d = |\sigma|$.
+    The \textit{Pl\"ucker Coordinates} of $\Theta$ are the minors $\det(\Theta_{\sigma})$ for subsets $\sigma \subseteq [n]$.
+\end{definition}
+
+\begin{definition}[Grassmanian]
+    The subvariety $G_{d,n}$ of the projective space $\mathbb{P}^{\binom{n}{d} -1}$ consisting of all Pl\"ucker coordinate vectors representing $d$-dimensional subspaces of $\K^n$ is called the Grassmanian.
+\end{definition}
+
+\subsection{Slack Realization Spaces of Polytopes (and Matroids)}
+
+\begin{definition}[Slack Matrix]
+    Let $P \subset \R^d$ be a polytope, $P = \text{conv}\{p_1, \dots, p_n \} = \{ x \in \R^d : Ax \leq b \}$.
+    And let $V_h$, and $A_h$ be the following,
+    $$V_h = \left[ \begin{array}{c c c} 1 & & 1 \\ \uparrow & & \uparrow \\ p_1 & \cdots & p_n \\ \downarrow & & \downarrow \end{array} \right] \quad , \quad A_h = [ b | -A ] \in \R^{m \times d}$$
+    The \textit{slack matrix} of $P$ is,
+    $$S_p = V_{h}^T \cdot A_h^T$$
+\end{definition}
+
+\begin{proposition}
+    Two labeled polytopes $P, Q$ are projectively equivalent if and only if $\text{diag}(\lambda_1, \dots, \lambda_n) \cdot S_p \cdot \text{diag}(\mu_1, \dots, \mu_m)$ is a slack matrix of $Q$ for $\lambda_i, \mu_i > 0$.
+\end{proposition}
