@@ -2,14 +2,28 @@
 
 \subsection{Time \& Global States}
 \subsubsection*{Time}
+
+\textbf{Physical Clocks}
+
+Physical clocks allow to synchronize nodes \textbf{within a given bound.} Synchronize at least every \textbf{\textcolor{red}{$R < \frac{\delta}{2\rho}$ to limit skew between two clocks to less than $\delta$}}.
+Where:
+\begin{itemize}
+    \item $R$: resyncrhonization interval.
+    \item $\rho$: maximum clock drift rate.
+    \item $\delta:$ maximum allowed clock skew.
+\end{itemize}
+
+
 \textbf{Logical Clocks}
+
 Implemented to capture the happened-before relation. They satisfy:
 \begin{enumerate}
-    \item If a and b are two events in the same process, a->b => C(a) < C(b)
-    \item If a sends a message to b => C(a) < C(b)
+    \item If $a$ and $b$ are two events in the same process, $a \rightarrow b \Rightarrow C(a) < C(b)$
+    \item If $a$ sends a message to $b => C(a) < C(b)$
 \end{enumerate}
 
 \textbf{Lamport's logical clocks:}
+
 \begin{itemize}
     \item Each process $P_i$ has a counter $C_i$
     \item $C_i$ is updated using the following rules:
@@ -19,9 +33,10 @@ Implemented to capture the happened-before relation. They satisfy:
         \item When $P_i$ receives a message, set $C_i = \max(C_i, ts(m))$ and then increase $C_i$ by one. 
     \end{enumerate}
 \end{itemize}
-Lamport's clocks do not guarantee that if $C(a) < C(b) \Rightarrow a -> b$.
+Lamport's clocks do not guarantee that if $C(a) < C(b) \Rightarrow a \rightarrow b$.
 
 \textbf{Vector clocks:}
+
 \begin{itemize}
     \item Each process $P_i$ has an array $VC_i [ 1, \dots, n ]$
     \item It is updated as follows:
@@ -67,6 +82,24 @@ A \textbf{global state predicate}, $\varphi$ is a property that is either true o
 
 \subsubsection*{Mutual Exclusion}
 
+\textbf{Problem:} A set of processes in a distributed system want exclusive access to some shared resource.
+The desired properties are:
+\begin{enumerate}
+    \item \textbf{Safety:} at most one process may execute at a time.
+    \item \textbf{Liveness:} requests to enter and exit eventually succeed.
+    \item \textbf{Happened-before ordering}
+\end{enumerate}
+
+\begin{enumerate}
+    \item Permission-Based Solutions:
+    \begin{enumerate}
+        \item \textbf{Centralized Algorithm:} a coordinator grants access to the shared resource, single point of failure.
+        \item \textbf{Lin's Voting Algorithm:} decentralized algoritm with N coordinators.
+    \end{enumerate}
+    \item Token-Based Solutions:
+    \begin{enumerate}
+    \end{enumerate}
+\end{enumerate}
 \subsubsection*{Election Algorithms}
 
 \subsubsection*{Multicast Communications}
