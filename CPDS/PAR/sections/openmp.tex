@@ -45,7 +45,7 @@ Therefore, threads need to synchronize to impose some ordering in their sequence
     \item \textbf{Thread Barrier:} threads cannot proceed past it until all threads reach the barrier and all work is completed. The \texttt{parallel} construct has an implicit barrier at the end.
     \item \textbf{Critical:} \texttt{\#pragma omp critical} provides a region of mutual exclusion. Only one thread can be working at any given time.
     \item \textbf{Atomic:} \texttt{\#pragma omp atomic} ensures atomic access to a storage location. Usually faster than critical.
-    \item \textbf{Reduction:} all threads accumulate values into a common (shared) variable using one of the following operators \texttt{+,-,*,|,||,\&,\&\&,\^}.
+    \item \textbf{Reduction:} \texttt{\#pragma omp reduction(+:sum)} all threads accumulate values into a common (shared) variable using one of the following operators \texttt{+,-,*,|,||,\&,\&\&,\^}.
     \item \textbf{Locks:} lastly, the programmer may also use the pre-defined locks in the specification.
 \end{itemize}
 

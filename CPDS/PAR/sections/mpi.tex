@@ -27,10 +27,10 @@ Return from the procedure indicates the user is allowed to reuse the resources s
 \subsection*{Non-Blocking}
 The procedure may return before the operation completes, and before the user is allowed to reuse resources specified in the call.
 \begin{itemize}
-    \item \texttt{MPI\_Isend}: performs a non-blocking send, uses an identifier for later enquiry to wait.
-    \item \texttt{MPI\_Irecv}: performs a non-blocking receive operation.
-    \item \texttt{MPI\_Wait}: waits for non-blocking operation to complete.
-    \item \texttt{MPI\_Test}: test for the completion of non-blocking send or receive.
+    \item \texttt{MPI\_Isend(buf, count, type, dest, tag, comm, \&MPI\_Request)}: performs a non-blocking send, uses an identifier for later enquiry to wait.
+    \item \texttt{MPI\_Irecv(buf, count, type, src, tag, comm, \&MPI\_Request)}: performs a non-blocking receive operation.
+    \item \texttt{MPI\_Wait(\&MPI\_Request, \&MPI\_Status)}: waits for non-blocking operation to complete.
+    \item \texttt{MPI\_Test(\&MPI\_Request, \&flag, \&MPI\_Status)}: test for the completion of non-blocking send or receive.
 \end{itemize}
 
 \subsection{Collective Communication}
