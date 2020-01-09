@@ -95,13 +95,68 @@ The desired properties are:
     \begin{enumerate}
         \item \textbf{Centralized Algorithm:} a coordinator grants access to the shared resource, single point of failure.
         \item \textbf{Lin's Voting Algorithm:} decentralized algoritm with N coordinators.
+        \item \textbf{Ricart \& Agrawala's Algorithm:} multicast with logical clocks, send request to all other processes and decide basing on logical time.
+            Variant receiving votes from a subset of the processes ($M$ subsets of size $K$ being $\sqrt{N}$ the optimum).
     \end{enumerate}
     \item Token-Based Solutions:
     \begin{enumerate}
+        \item Organize processes in a logical unidirectional ring.
+        \item A \textbf{token} message circulates around the ring.
+        \item Only the process holding the token can enter the critical section.
     \end{enumerate}
 \end{enumerate}
 \subsubsection*{Election Algorithms}
+Election algorithms are techniques to pick a \textbf{unique} coordinator (leader).
+Desired properties are:
+\begin{enumerate}
+    \item \textbf{Safety:} a participant is either non-decided or decided with the non-crashed process with the largest ID.
+    \item \textbf{Liveness:} all processes eventually participate \& either decide a coordinator or crash.
+\end{enumerate}
+Any process can initiate an election (several ones may run concurrently).
+Some algorithms:
+\begin{itemize}
+    \item \textbf{Bully Algorithm}
+    \item \textbf{Chang and Robert's Ring Algorithm}
+\end{itemize}
+Some can tolerate failures, but none of them can deal with network partitions.
 
 \subsubsection*{Multicast Communications}
 
+It is an important service in distributed systems to disseminate data reliably to large number of users.
+It is also used to implement several distributed algorithms.
+Different types:
+\begin{itemize}
+    \item Multicast: send a message to a process group.
+    \item Reliable Multicast: deliver messages to all or no process in the group.
+    \item Ordered Multicast: deliver messages while fulfilling ordering requirements.
+    \item Atomic Multicast: deliver messages in the same order to all processes and any process can fail.
+        Solution for multicasing in open groups with \textbf{faulty} processes.
+        Deliver messages only to \textbf{non-faulty} members.
+        A membership service keeps all members updated on who the non-faulty members are (send \textbf{view messages} of group membership in total order).
+        View changes when processes join/leave the group.
+        Each message is associated with a group view (multicasts cannot pass across view changes).
+
+\end{itemize}
 \subsubsection*{Consensus}
+
+General form of agreement: some processes must agree on a value in a finite number of steps in the presence of failures.
+Some of the desired properties are:
+\begin{itemize}
+    \item \textbf{Termination:} Every non-faulty process must eventually decide.
+    \item \textbf{Agreement:} The final decision of every non-faulty process must be identical.
+    \item \textbf{Validity:} If all the non-faulty processes proposed the same value, then the final decision must be that value.
+\end{itemize}
+
+With \textbf{correct} processes and \textbf{reliable} communication, agreement is straightforward.
+With \textbf{unreliable} communication, agreement \textbf{\textcolor{red}{cannot be guaranteed}}.
+With \textbf{reliable communication}, crash-faulty processes, and synchronous system we use the \textbf{Dolev \& Strong's Algorithm}.
+With \textbf{byzantine-faulty processes} and reliable communication in a synchronous system we face the \textbf{\textcolor{red}{Byzantine Generals Problem}}.
+Byzantine processes may work together maliciously. We have interactive consistency requirements:
+\begin{itemize}
+    \item[IC1:] All loyal lieutenants obey the same order (agreement).
+    \item[IC2:] If the commander is loyal, then every loyal lieutenant obeys the order he sends (integrity).
+\end{itemize}
+\textbf{Impossibility result:} with three processes, no solution can work with even one traitor.
+\textbf{\textcolor{red}{No solution with fewer than $3m + 1$ generals can cope with $m$ traitors.}}
+
+\textbf{Faulty} processes and \textbf{reliable} communication in an \textbf{asynchronous} system, no algorithm can guarantee to reach consensus.

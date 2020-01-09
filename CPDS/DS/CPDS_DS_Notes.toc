@@ -4,6 +4,6 @@
 \contentsline {section}{\numberline {2}Distributed Algorithms}{2}{section.2}
 \contentsline {subsection}{\numberline {2.1}Time \& Global States}{2}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Coordination and Agreement}{3}{subsection.2.2}
-\contentsline {section}{\numberline {3}Distributed Shared Data}{3}{section.3}
-\contentsline {subsection}{\numberline {3.1}Distributed Transactions}{3}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Consistency \& Replication}{3}{subsection.3.2}
+\contentsline {section}{\numberline {3}Distributed Shared Data}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}Distributed Transactions}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Consistency \& Replication}{5}{subsection.3.2}

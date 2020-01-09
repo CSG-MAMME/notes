@@ -1,0 +1,136 @@
+\documentclass[a4paper, 10pt, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, left=1cm, right=1cm, top=0.5cm, bottom=1cm, headsep=0.25cm, includehead]{geometry}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{CPDS: Distributed Systems Module - Cheat Sheet}
+\rhead{Carlos Segarra}
+\pagenumbering{gobble}
+\usepackage[linkcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist[enumerate]{noitemsep, topsep=2pt}
+\setlist[itemize]{noitemsep, topsep=2pt}
+
+\begin{document}
+
+    \textbf{Lin's Voting Algorithm}
+    
+    Decentralized algorithm with \textbf{N coordinators}.
+    Using \textbf{voting}, gain quorum from the coordinators.
+    \begin{enumerate}
+        \item Process sends \textbf{Request} to each coordinator: including Lamport's clock and ID.
+        \item Coordinator grants vote if it has not voted yet (otherwise queue request) and send \textbf{Response} w/ current vote.
+        \item Requester analyzes votes in responses: if majority accesses section, if someone else majority waits. Else, either releases and backs off, or sends \textbf{yield} (release + request).
+        \item On receiving a \textbf{yield} a coordinator removes its vote, queues request and sends response.
+        \item When the process exists the critical section sends a \textbf{release} message.
+    \end{enumerate}
+
+    \textbf{Ricart \& Agrawala's Voting Algorithm}
+
+    Multicast with logical clocks.
+    \begin{enumerate}
+        \item Process sends \textbf{Request} to all other processes.
+        \item When requester receives \textbf{OK} from all processes, it can access the critical section.
+        \item When a process receives a \textbf{Request}: if not accessing send \textbf{OK}, if accessing now queue, if wants to access decide basing on clock + PID.
+    \end{enumerate}
+    Variant: get permission to access CS by obtaining votes from a \textbf{subset} of the rest of the processes.
+    All voting sets have the same size $K$, and each $p_i$ belongs to $M$ voting sets, and is ruled by just one (opt. at $K = M \simeq \sqrt{N}$).
+
+    \textbf{Bully Election Algorithm}
+
+    Synchronous system and reliable message delivery.
+    \begin{enumerate}
+        \item P sends an \textbf{Election} message to all the processes with higher IDs and waits for \textbf{OK} messages.
+        \item If a process receives an \textbf{Election} message, returns \textbf{OK} and starts another election.
+        \item If P receives an \textbf{OK} it drops out the election and awaits a \textbf{Coordinator} message.
+        \item If P does not receive any \textbf{OK} before the timeout (synchronous system), it wins and sens a \textbf{Coordinator} message.
+    \end{enumerate}
+
+    \textbf{Chang and Roberts' Ring Election Algorithm}
+
+    Processes are organized by ID in a logical unidirectional ring (each process knows its successor), asynchronous system.
+    \begin{enumerate}
+        \item P sends an \textbf{Election} message (with its ID) to its successor, and becomes a participant.
+        \item On receiving an \textbf{Election}, Q compares the ID in the message with its own: if greater Q forwards the message, if smaller Q replaces the ID with its own and becomes a participant (unless it already is, in which case it drops the message). If the ID is the same, Q wins and sends a \textbf{Coordinator} message.
+        \item When Q receives a \textbf{Coordinator} message, it forwards it and becomes a non-participant.
+    \end{enumerate}
+    What happens when a process crashes? We make use of the \textbf{Enhanced Ring Algorithm}.
+    \begin{enumerate}
+        \item P sends an \textbf{Election} message to its closest alive successor.
+        \item At each step, each process adds its ID to the list in the message.
+        \item When the message gets back to the initiator (first PID) it elects the highest ID in the list and sends a \textbf{Coordinator} with this ID.
+        \item When relaying, each process adds its ID to the list, if when finished the elected process ID is in the list, election is over.
+    \end{enumerate}
+
+    \textbf{Basic Reliable Multicast}
+
+    Assume process do not fail and do not join/leave the group.
+    \begin{enumerate}
+        \item Sender $P$ assigns a sequence number to each outgoing message, and stores a copy until everyone has acked.
+        \item Each process $Q$ records the number of the \textbf{last message it has delivered} coming from any other process $P$, $L_Q(P)$.
+        \item When $Q$ receives a message from $P$: if $S_P = L_Q(P) + 1$ it delivers the message, increase counter, and ack $P$, if it is greater, keeps message in queue and requests RTX of missing elements, otherwise it discards the message.
+    \end{enumerate}
+
+    \textbf{Scalable Reliable Multicast}
+
+    Use sequence numbers but \textbf{reduce} the number of feedback messages to the sender.
+    Only missing messages are reported.
+    Each process waits a random delay prior to sending a NACK, and if they receive one, they discard theirs.
+
+    \textbf{Ordered Multicast}
+
+    Due to latency, messages might arrive in different order at different nodes.
+    Common ordering requirements: FIFO (preserve intra-process order), causal (happened-before relation), total (all process deliver in same order).
+    In order to implement it:
+    \begin{itemize}
+        \item \textbf{FIFO:} Use \textbf{sequence numbers per sender} and hold-back queue for out-of-order messages.
+        \item \textbf{Total:} either use a centralized sequencer to give a total ordering, or by agreement of the processes:
+        \begin{enumerate}
+            \item Sender multicasts message $m$.
+            \item Each receiver $j$ replies with a proposed message number $P_j = \max(A_j, P_j) = \max(\text{ largest agreed }, \text{ own largest proposed })$.
+            \item Sender selects the largest proposal $N$ and multicasts it.
+            \item Receiver $j$ updates $A_j$ and reorders messages in the queue.
+        \end{enumerate}
+        \item \textbf{Causal:} delivered only if all causally preceedin messages have been delivered.
+        \begin{enumerate}
+            \item $P_i$ increases $VC_i[i]$ only when sending a message.
+            \item If $P_j$ receives $m$ from $P_i$ it postpones delivery until: $ts(m)[i] = VC_j[i] + 1$ and $ts(m)[k] \leq VC_j[k] \forall k \neq i$.
+            \item $P_j$ increases $VC_j[i]$ after delivering $m$.
+        \end{enumerate}
+    \end{itemize}
+
+    \textbf{Dolev \& Strong's Consensus Algorithm}
+
+    Crash-faulty processes and reliable communication in a synchronous system.
+    Up to $f$ of the $N$ processes exhibit crash failures.
+    Algorithm proceeds in $f+1$ rounds:
+    \begin{enumerate}
+        \item Each process proposes a value.
+        \item From round $1$ to round $f+1$ each process:
+        \begin{enumerate}
+            \item Multicasts NEW values. Initially send its proposed value.
+            \item Collects vales from other processes. (Round terminates when values from all processes are collected or by timeout).
+        \end{enumerate}
+        \item Each process decides against collected values.
+    \end{enumerate}
+
+    \textbf{OM(m) Consensus Algorithm}
+
+    Byzantine-faulty processes and reliable communication in a synchronous system.
+    At most $m$ traitors and at least $3m + 1$ generals.
+    It requires $m+1$ rounds.
+    \begin{enumerate}
+        \item \textbf{OM(0)}: the commander sends his value to every lieutenant, each lieutenant accepts the value he receives as the order.
+        \item \textbf{OM(m), $m > 0$}:
+        \begin{enumerate}
+            \item The commander sends his value to every lieutenant.
+            \item Each lieutenant $i$ acts as a commander in $OM(m-1)$ and broadcasts the value he got from the commander to the $n-2$ remaining lieutenants.
+            \item Each lieutenant $i$ accepts the value $\text{majority}(v_1, \dots, v_{n-1})$ where $i$ is the directly received value, and the rest are the broadcasted values.
+        \end{enumerate}
+    \end{enumerate}
+
+\end{document}
