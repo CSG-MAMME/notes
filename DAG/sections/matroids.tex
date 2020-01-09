@@ -4,7 +4,7 @@
 
 \begin{definition}[Indepndent Sets]
     Let $E$ be a finite set called the \textit{ground set}.
-    Then $\I \subset 2^E$ forms the \textit{independent sets} of a \textit{matroid} $M$ on $E$ - $M = (E, \I)$ - if $\I$ satisfies:
+    Then $\I \subset 2^E$ forms the \textit{independent sets} of a \textit{matroid} $M$ on $E$, $M = (E, \I)$, if $\I$ satisfies:
     \begin{enumerate}
         \item[I1.] $\emptyset \in \I$
         \item[I2.] $I_1 \in \I$ and $I_2 \subset I_1$ implies $I_2 \in \I$
@@ -18,7 +18,7 @@
     \begin{enumerate}
         \item[B1.] $\B \neq \emptyset$
         \item[B2.] (\textit{Exchange Axiom}) Given $B_1, B_2 \in \B$ and $x \in B_1 - B_2$, there exists $y \in B_2 - B_1$ with
-            $$ (B1 - \{ x\} \cup \{ y\} \in \B$$
+            $$ (B_1 - \{ x\}) \cup \{ y\} \in \B$$
     \end{enumerate}
 \end{definition}
 
@@ -147,6 +147,15 @@ In a linear one, the sign of the circuit would correspond to the coeficients of 
     \textit{I.e.} the sign relative to its peers induced by the hyperplane of the normal vector.
 \end{definition}
 
+\begin{definition}[Chirotope]
+    Let $M = (E, \mathcal{F})$ be an oriented matroid.
+    Let $r = \text{rank}(M)$.
+    Then, the \textit{chirotope} is the function,
+    $$\chi \: : \: \{ \text{ ordered sequences } (e_1, \dots, e_r) \: : \: e_i \in E \} \rightarrow \{ \pm 1, 0 \}$$
+    defined by,
+    $$ \chi(e_1, \dots, e_r) = \text{ sign} \det (M \: |_{e_1, \dots, e_r} ) = \left\{ \begin{array}{c c} \pm 1 & \text{ if } \{e_1, \dots, e_r \} \in \B(M) \\ 0 & \text{ otherwise } \end{array} \right. $$
+\end{definition}
+
 \subsection{Operations on Matroids}
 
 \begin{definition}[Direct Sum]
@@ -171,7 +180,7 @@ In a linear one, the sign of the circuit would correspond to the coeficients of 
     $$\B(M^*) = \{ E - B : B \in \B(M) \}$$
     Some interesting properties of the dual matroid:
     \begin{itemize}
-        \item $$(M \backslash e )^* = M^* / e^*$$
+        \item $(M \backslash e )^* = M^* / e^*$
         \item Loops are dual to coloops.
         \item Circuits (minimal linear dependences) are dual to cocricuits (minimal value vectors with minimal support).
     \end{itemize}

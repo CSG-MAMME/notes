@@ -19,7 +19,7 @@
     This family includes a line segment, triangle, and tetrahedron.
 \end{definition}
 
-\begin{definition}[Affine Combination, Hull, and Space]
+\begin{definition}[Affine Combination, Affine Hull, Affine and Space]
     Affine spaces are closely related to linear vector spaces in the following way:
     \begin{enumerate}
         \item An \textit{affine combination} of vectors $\pmb{p_1}, \dots, \pmb{p_t} \in \R^d$ is a combination of the form $\sum_{i=1}^t \lambda_i \pmb{p_i}$ such that $\sum_{i=1}^t \lambda_i = 1$.
@@ -49,7 +49,7 @@
 \end{definition}
 
 \begin{definition}[Simple and Simplicial Polytopes]
-    A $d$-dimensional polytope $P$ is \textit{simple} if every vertex of $P$ is incident to $d$ edges of $P$, or equivalently, every vertex of $P$ lies on precisely $d$ facts of $P$.
+    A $d$-dimensional polytope $P$ is \textit{simple} if every vertex of $P$ is incident to $d$ edges of $P$, or equivalently, every vertex of $P$ lies on precisely $d$ facets of $P$.
 
     A $d$-dimensional polytope $P$ is \textit{simplicial} if for $0 \leq k \leq \text{dim}(P) - 1$, each $k$ face of $P$ is combinatorially isomorphic to a $k$-simplex.
 \end{definition}
@@ -99,7 +99,7 @@ Note that the latter are \textit{affinely independent} iff the former are \texti
 \end{definition}
 
 \begin{lemma}[Radon's Lemma]
-    Let $A$ be a set of $d+1$ points in $\R^d$. Then, there exists two disjoint subsets $A_1, A_2 \subset A$ s.t conv$(A_1) \cap \text{conv}(A_2) \neq \emptyset$.
+    Let $A$ be a set of $d+2$ points in $\R^d$. Then, there exist two disjoint subsets $A_1, A_2 \subset A$ s.t conv$(A_1) \cap \text{conv}(A_2) \neq \emptyset$.
 \end{lemma}
 
 The main goal of the Gale transform is to read the face lattice of a $d$-polytope $P$ from its Gale transfrom.

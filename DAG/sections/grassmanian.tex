@@ -1,10 +1,5 @@
 \section{The Grassmannian and Flags}
 
-\begin{itemize}
-    \item Plucker coordinates of a point cofiguration
-    \item The grassmanian and Flag variety
-\end{itemize}
-
 \subsection{The Complete Flag Variety}
 
 Let $\mathbb{K}$ be an algebraically closed field.
@@ -13,7 +8,7 @@ Let $\mathbb{K}$ be an algebraically closed field.
     A \textit{complete flag} in the vector space $\K^n$ is a chain
     $$V_{\bullet} : V_{0} \subset V_1 \subset \dots \subset V_{n-1} \subset V_{n} $$
     of vector subspaces of $\K^n$ such that $\text{dim}_{\K}(V_d) = d$.
-    The \textit{flag variety}, $\mathcal{Fl}_n$ is the set of all complete flags in $\K^n$.
+    The \textit{flag variety}, $\mathcal{F}\ell_n$ is the set of all complete flags in $\K^n$.
 \end{definition}
 
 Every $d$-dimensional subspace of $\K^n$ can be expressed as the row span of some $d \times n$ matrix $\Theta$ with entries $\theta_{i,j}$ in $\K$.
@@ -47,7 +42,7 @@ Hence there are $d$ columns of $\Theta$ forming a square matrix with nonzero det
 \begin{definition}[Slack Matrix]
     Let $P \subset \R^d$ be a polytope, $P = \text{conv}\{p_1, \dots, p_n \} = \{ x \in \R^d : Ax \leq b \}$.
     And let $V_h$, and $A_h$ be the following,
-    $$V_h = \left[ \begin{array}{c c c} 1 & & 1 \\ \uparrow & & \uparrow \\ p_1 & \cdots & p_n \\ \downarrow & & \downarrow \end{array} \right] \quad , \quad A_h = [ b | -A ] \in \R^{m \times d}$$
+    $$V_h = \left[ \begin{array}{c c c} 1 & & 1 \\ \uparrow & & \uparrow \\ p_1 & \cdots & p_n \\ \downarrow & & \downarrow \end{array} \right] \quad , \quad A_h = [ b \: | -A ] \in \R^{m \times d}$$
     The \textit{slack matrix} of $P$ is,
     $$S_p = V_{h}^T \cdot A_h^T$$
 \end{definition}
