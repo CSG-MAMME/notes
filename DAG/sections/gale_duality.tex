@@ -19,7 +19,7 @@
     This family includes a line segment, triangle, and tetrahedron.
 \end{definition}
 
-\begin{definition}[Affine Combination, Affine Hull, Affine and Space]
+\begin{definition}[Affine Combination, Affine Hull, and Affine Space]
     Affine spaces are closely related to linear vector spaces in the following way:
     \begin{enumerate}
         \item An \textit{affine combination} of vectors $\pmb{p_1}, \dots, \pmb{p_t} \in \R^d$ is a combination of the form $\sum_{i=1}^t \lambda_i \pmb{p_i}$ such that $\sum_{i=1}^t \lambda_i = 1$.
@@ -85,10 +85,10 @@ Note that the latter are \textit{affinely independent} iff the former are \texti
 \begin{definition}[Linear and Affine Value and Dependences]
     Given $A$, and $\bar{A}$ we define the following:
     \begin{itemize}
-        \item $\text{LinVal}(\bar{A}) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) | f: \R^{d+1} \longrightarrow \R \text{ linear} \}$
-        \item $\text{LinDep}(\bar{A}) = \{ \alpha \in \R^{n+1} | \alpha_1 \pmb{\bar{a_1}} + \dots + \alpha_n \pmb{\bar{a_n}} = 0 \}$
-        \item $\text{AffVal}(A) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) | f: \R^{d} \longrightarrow \R \text{ affine} \}$
-        \item $\text{AffDep}(A) = \{ \alpha \in \R^n | \alpha_1 \pmb{a_1} + \dots + \alpha_n \pmb{a_n} = 0, \alpha_1 + \dots + \alpha_n = 0 \}$
+        \item $\text{LinVal}(\bar{A}) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) \: | \: f: \R^{d+1} \longrightarrow \R \text{ linear} \}$
+        \item $\text{LinDep}(\bar{A}) = \{ \alpha \in \R^{n+1} \: | \: \alpha_1 \pmb{\bar{a_1}} + \dots + \alpha_n \pmb{\bar{a_n}} = 0 \}$
+        \item $\text{AffVal}(A) = \{(f(\bar{\pmb{a_1}}), \dots, f(\bar{\pmb{a_n}})) \: | \: f: \R^{d} \longrightarrow \R \text{ affine} \}$
+        \item $\text{AffDep}(A) = \{ \alpha \in \R^n \: | \: \alpha_1 \pmb{a_1} + \dots + \alpha_n \pmb{a_n} = 0, \alpha_1 + \dots + \alpha_n = 0 \}$
     \end{itemize}
 \end{definition}
 
