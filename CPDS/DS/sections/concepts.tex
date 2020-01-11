@@ -2,4 +2,30 @@
 
 \subsection{Definition of a Distributed System}
 
+A distributed system is a collection of \textbf{autonomous computing elements} that appears to its users as a \textbf{single coherent system}.
+
 \subsection{Challenges of Distributed Systems}
+
+\begin{enumerate}
+    \item \textbf{Global Time:}
+    \begin{itemize}
+        \item Only low accuracy system clock.
+        \item \textbf{Clock Skew:} two clocks, two times.
+        \item \textbf{Clock Drift:} two clocks, two count rates.
+    \end{itemize}
+    \item \textbf{Asynchrony:} messages take (varaiable) time to be delivered.
+        This results on two types of distributed systems.
+    \begin{itemize}
+        \item Synchronous: we use time and timeouts.
+        \item Asynchronous: delays, execution time, and clock drift are \textbf{not bounded}.
+    \end{itemize}
+    \item \textbf{Transparency:} ability of presenting itself as a single computer system.
+    \item \textbf{Fault Tolerance:} a failure is any deviation of the observed behaviour from the specified one.
+    \begin{itemize}
+        \item \textbf{Crash Failure:} process halts and remains halted.
+        \item \textbf{Omission Failure:} sent message never arrives at the other end.
+        \item \textbf{Timing Failure:} process response lies outside a time interval.
+        \item \textbf{Response Failure:} process response is incorrect.
+        \item \textbf{Byzantine Failure:} arbitrary failures (malicious).
+    \end{itemize}
+\end{enumerate}
