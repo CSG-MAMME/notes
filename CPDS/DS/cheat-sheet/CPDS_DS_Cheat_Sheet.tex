@@ -133,4 +133,79 @@
         \end{enumerate}
     \end{enumerate}
 
+    \newpage
+
+    \textbf{Strict Two-Phase Locking}
+    \begin{enumerate}
+        \item When a R/W operation accesses an object within a TX:
+        \begin{enumerate}
+            \item If the object not locked, it is locked and proceeds.
+            \item If (non-)conflicting lock, (not )wait until unlocked.
+        \end{enumerate}
+        \item When transaction commits: server releases all locks.
+    \end{enumerate}
+
+    \textbf{Timestamp Ordering}
+    \begin{itemize}
+        \item $T$ performs a \textbf{W} (creates new tentative version) if:
+        \begin{itemize}
+            \item $T \geq \text{ max. R TS} \quad \&\& $
+            \item $T \geq \text{ W TS on commited version}$.
+        \end{itemize}
+        \item $T$ performs a \textbf{R} if object last written by an earlier transaction.
+        \begin{itemize}
+            \item Directed to version w/ maximum W TS.
+            \item If tentative TS, $T$ must wait.
+        \end{itemize}
+    \end{itemize}
+
+    \textbf{Two-Phase Commit Protocol (2PC)}
+    \begin{enumerate}
+        \item Coordinator sends \textbf{Vote-Request} to all participants.
+        \item Participant replies: \textbf{Vote-Commit} or \textbf{Vote-Abort}
+        \item If all commit, send \textbf{Global-Commit} abort otherwise.
+    \end{enumerate}
+
+    \textbf{Data-Centric Strong Consistency Models}
+    \begin{enumerate}
+        \item \textbf{Strict:} all processes see the result of the most recent write.
+        \item \textbf{Linearizability:} all processes see same interleaving of operations ordered according to a global timestamp.
+        \item \textbf{Sequential:} all processes see the same interleaving of operations, but not ordered in time.
+        \item \textbf{Causal:} all processes see causally-related operations in the same order.
+        \item \textbf{FIFO:} all processes see operations from each other in the order they were issued.
+    \end{enumerate}
+
+    \textbf{Client-Centric Consistency Models}
+
+    We keep track of a \textbf{Read Set} (writes relevant for the read operations) and a \textbf{Write Set} (writes performed by that client).
+    \begin{enumerate}
+        \item \textbf{Read Your Writes:} if client $C$ writes $x$ on replica $A$, successive reads on $x$ on replica $B$ will return the written value or a more recent one.
+        \item \textbf{Monotonic Reads:} if client $C$ reads $x$ on replica $A$, any successive read on $x$ by $C$ will return the same value or a more recent one.
+        \item \textbf{Monotonic Writes:} a write by $C$ on $x$ on replica $A$ is completed also in replica $B$ before $C$ performs a successive write on $B$.
+        \item \textbf{Writes Follow Reads:} a write by a process is ordered after any writes whose effects were seen by previous reads of that process.
+    \end{enumerate}
+
+    \textbf{Primary-Based Protocols}
+
+    Each data item is associated with a \textbf{primary replica} in charge of coordinating write operations.
+    \begin{enumerate}
+        \item \textbf{Primary-Backup Remote-Write Protocols:}
+        \begin{itemize}
+            \item All writes done at a fixed replica, local reads.
+            \item Either blocking or non-blocking writes.
+        \end{itemize}
+        \item \textbf{Primary-Backup Local-Write Protocols:}
+        \begin{itemize}
+            \item Primary \textbf{migrates} to the replica that is writing.
+            \item Replicas updated using a non-blocking protocol.
+        \end{itemize}
+    \end{enumerate}
+
+    \textbf{Replicated-Write Protocols}
+
+    Writes can be carried out at \textbf{multiple replicas}.
+    \begin{itemize}
+        \item \textbf{Active Replication:} each operation is forwarded to \textbf{all} replicas.
+        \item \textbf{Quorum-based:} permission from a quorum of $N$ replicas.
+    \end{itemize}
 \end{document}

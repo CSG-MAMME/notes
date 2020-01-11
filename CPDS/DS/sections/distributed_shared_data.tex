@@ -4,18 +4,101 @@
 
 \subsubsection*{Introduction}
 
-\subsubsection*{Problems with Concurrent Transactions}
+The goal is to provide atomicity and isolation to a group of operations at a server in the presence of multiple clients and process crashes.
+The desired properties are:
+\begin{itemize}
+    \item \textbf{Atomicity:} either all operations are completed or none of them is executed.
+    \item \textbf{Consistency:} takes the system from one consistent state to another.
+    \item \textbf{Isolation:} updates of one transaction are not visible to other transactions until it commits.
+    \item \textbf{Durability:} persistent once completed successfully.
+\end{itemize}
+
+Two transactions are \textbf{serially equivalent} if all pairs of conflicting operations are executed in the same order at all the shared objects.
 
 \subsubsection*{Concurrency Control}
 
+Schedule concurrent transactions so that they execute preserving \textbf{serial equivalence}.
+\begin{enumerate}
+    \item \textbf{Strict Two-Phase Locking}: a transaction is not allowed new locks after it has released one to get serial equivalence.
+        Locks must be held until transaction commits or aborts.
+        To increase concurrency, we use R and W locks.
+        However, deadlocks may appear, to prevent them we use wait-for graphs to represent waiting relations.
+        We can also use lock timeouts.
+    \item \textbf{Timestamp Ordering}
+        In order to choose an adequate timeout, we map each transaction with a \textbf{unique} timestamp.
+        We then use the following rules:
+        \begin{itemize}
+            \item Transaction $T$ performs a \textbf{write} operation: valid only if object was last read and written earlier.
+                Create tentative version with the current timestamp.
+            \item Transaction $T$ performs a \textbf{read} operation: valid only if object last written by an earlier transaction.
+        \end{itemize}
+    \item \textbf{Optimistic Concurrency Control}: based on the premise that most transactions do not conflict.
+        Three phases:
+        \begin{enumerate}
+            \item \textbf{Working Phase:} transaction keeps tentative versions of each object that it updates, together with the R and W sets.
+                Read operations are directed to the tentative version (if exists) write operations to the tentative one.
+            \item \textbf{Validation Phase:} check for conflicts with overlapping transactions.
+            \begin{enumerate}
+                \item \textbf{Backward Validation:} compare the TX read set with the write set of committed transactions.
+                \item \textbf{Forward Validation:} compare the TX write set with the read set of active transactions.
+            \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
 \subsubsection*{Distributed Transactions}
+
+A transaction can access objects managed by multiple servers.
+To ensure atomicity, all the servers accessed by a transaction must agree on the final outcome of the execution (commit/abort).
+\textbf{One-Phase Commit} is not feasible, we need to use a \textbf{Two-Phase Commit} protocol (2PC).
+2PC is a blocking protocol (safe, but not live).
+
+For distributed concurrency control, the same techniques exposed before apply.
 
 \subsection{Consistency \& Replication}
 
 \subsubsection*{Introduction}
 
+Reasons for replication:
+\begin{enumerate}
+    \item Increase \textbf{availability}: data is available despite server failures and network partitions.
+    \item Enhance \textbf{reliability}: data is correct on the presence of faults.
+    \item Improve \textbf{performance}: supporting enhanced \textbf{scalability}.
+\end{enumerate}
+
+Issues with replication:
+\begin{enumerate}
+    \item Replication should be \textbf{transparent}.
+    \item Replicated data should be \textbf{consistent}.
+\end{enumerate}
+
 \subsubsection*{Data-Centric Consistency Models}
 
+Consistency models in a data store:
+\begin{itemize}
+    \item Each process has a local replica of the data store.
+    \item Write operations to a local replica need to be propagated to remote replicas.
+\end{itemize}
+
+\textbf{Strong Consistency Models:}
+\begin{itemize}
+    \item Strict Consistency: any read on data item $x$ returns the value of the \textbf{most recent} write on $x$ (not feasible in distributed systems).
+    \item Sequential Consistency: all processes see \textbf{the same interleaving} of operations.
+    \item Linearizability (Strong Consistency): operations receive a timestamp, sequential consistency + $ts(x) < ts(y) \Rightarrow op(x) < op(y)$.
+\end{itemize}
+
+\textbf{Relaxed Consistency Models:}
+
+Weaker semantics by enforcing consistency on \textbf{groups of operations}.
+Each process performs operations on its local copy of the data store, and results are propagated only at the end of the critical section.
+These sections are delimited by means of \textbf{synchronization variables}.
+
 \subsubsection*{Client-Centric Consistency Models}
+
+Data-centric models aim to provide a system-wide consistent view on data stores with concurrent write operations (these models require highly available connections).
+
+\textbf{Eventual Consistency:}
+
+Targeted at stores that execute mainly read operations and have none or few write-write conflicts.
+Don't care if it serves stale data sometimes.
+It guarantees that a \textbf{single client} sees its accesses to the data store in a consistent way.
 
 \subsubsection*{Consistency Protocols}
