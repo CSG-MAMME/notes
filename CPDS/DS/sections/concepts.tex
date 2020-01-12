@@ -13,13 +13,21 @@ A distributed system is a collection of \textbf{autonomous computing elements} t
         \item \textbf{Clock Skew:} two clocks, two times.
         \item \textbf{Clock Drift:} two clocks, two count rates.
     \end{itemize}
-    \item \textbf{Asynchrony:} messages take (varaiable) time to be delivered.
+    \item \textbf{Asynchrony:} messages take (variable) time to be delivered.
         This results on two types of distributed systems.
     \begin{itemize}
         \item Synchronous: we use time and timeouts.
         \item Asynchronous: delays, execution time, and clock drift are \textbf{not bounded}.
     \end{itemize}
     \item \textbf{Transparency:} ability of presenting itself as a single computer system.
+    \begin{itemize}
+        \item \textbf{Access Transparency:} enable local and remote objects to be accessed using identical operations.
+        \item \textbf{Location Transparency:} enable objects to be accessed without knowledge of their physical location.
+        \item \textbf{Mobility Transparency:} allow the movement of objects and users within a system without affecting their operation.
+        \item \textbf{Replication Transparency:} allow multiple instances of an object to exist without knowledge of the replicas by users.
+        \item \textbf{Concurrency Transparency:} enable several users to operate concurrently on shared objects without interference between them.
+        \item \textbf{Failure Transparency:} Mask from an object the failure and possible recovery of other objects.
+    \end{itemize}
     \item \textbf{Fault Tolerance:} a failure is any deviation of the observed behaviour from the specified one.
     \begin{itemize}
         \item \textbf{Crash Failure:} process halts and remains halted.
@@ -27,5 +35,11 @@ A distributed system is a collection of \textbf{autonomous computing elements} t
         \item \textbf{Timing Failure:} process response lies outside a time interval.
         \item \textbf{Response Failure:} process response is incorrect.
         \item \textbf{Byzantine Failure:} arbitrary failures (malicious).
+    \end{itemize}
+    \item \textbf{Scalability:}
+    \begin{itemize}
+        \item \textbf{Size Scalability:} number of users and/or resources.
+        \item \textbf{Geographical Scalability:} maximum distance between nodes.
+        \item \textbf{Administrative Scalability:} number of administrative domains.
     \end{itemize}
 \end{enumerate}

@@ -17,6 +17,25 @@
 
 \begin{document}
 
+    \textbf{Chandy Lamport Snapshot Algorithm}
+
+    \begin{itemize}
+        \item Initiator process:
+        \begin{enumerate}
+            \item Record its own state.
+            \item Send a \textbf{special marker} on every outgoing channel.
+            \item Record incoming messages until marker received.
+        \end{enumerate}
+        \item When receiving a marker (if process has not recorded its own state)
+        \begin{enumerate}
+            \item Record own state
+            \item Send marker through outgoing channels
+            \item Start recording over incoming channels.
+        \end{enumerate}
+        \item Otherwise finalize state of incoming channel.
+    \end{itemize}
+
+
     \textbf{Lin's Voting Algorithm}
     
     Decentralized algorithm with \textbf{N coordinators}.
@@ -37,7 +56,7 @@
         \item When requester receives \textbf{OK} from all processes, it can access the critical section.
         \item When a process receives a \textbf{Request}: if not accessing send \textbf{OK}, if accessing now queue, if wants to access decide basing on clock + PID.
     \end{enumerate}
-    Variant: get permission to access CS by obtaining votes from a \textbf{subset} of the rest of the processes.
+    Variant (\textbf{Maekawa's Algorithm}): get permission to access CS by obtaining votes from a \textbf{subset} of the rest of the processes.
     All voting sets have the same size $K$, and each $p_i$ belongs to $M$ voting sets, and is ruled by just one (opt. at $K = M \simeq \sqrt{N}$).
 
     \textbf{Bully Election Algorithm}
@@ -133,8 +152,6 @@
         \end{enumerate}
     \end{enumerate}
 
-    \newpage
-
     \textbf{Strict Two-Phase Locking}
     \begin{enumerate}
         \item When a R/W operation accesses an object within a TX:
@@ -206,6 +223,14 @@
     Writes can be carried out at \textbf{multiple replicas}.
     \begin{itemize}
         \item \textbf{Active Replication:} each operation is forwarded to \textbf{all} replicas.
-        \item \textbf{Quorum-based:} permission from a quorum of $N$ replicas.
+        \item \textbf{Quorum-based:} permission from a quorum of $N$ replicas before either reading or writing.
+        \begin{itemize}
+            \item Read quorum of $N_R$ replicas before reading.
+            \item Write quorum of $N_W$ replicas before writing.
+        \end{itemize}
+        \item $N_R + N_W > N$ to avoid read-write conflicts.
+        \item $N_W > \frac{N}{2}$ to avoid write-write conflicts.
+        \item Correct choice, read one, write all.
+        \item Read operations return the last value written.
     \end{itemize}
 \end{document}

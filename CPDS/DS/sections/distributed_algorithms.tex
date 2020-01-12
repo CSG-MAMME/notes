@@ -67,6 +67,12 @@ We define some concepts:
 
 \textbf{Distributed Snapshot}
 
+\textbf{Chandy-Lamport Snapshot Algorithm}
+\begin{itemize}
+    \item \textbf{Goal:} record a consistent global state while capturing messages that are in transit.
+    \item The outcome of the algorithm are fragments of a consistent global state stored locally at processes.
+\end{itemize}
+
 \textbf{Global Predicates}
 
 Consistent global states form a lattice with reachability relation between sets.
@@ -160,3 +166,8 @@ Byzantine processes may work together maliciously. We have interactive consisten
 \textbf{\textcolor{red}{No solution with fewer than $3m + 1$ generals can cope with $m$ traitors.}}
 
 \textbf{Faulty} processes and \textbf{reliable} communication in an \textbf{asynchronous} system, no algorithm can guarantee to reach consensus.
+
+\textbf{Failure Detectors} + Synchronous Algorithm:
+\begin{itemize}
+    \item Determine which processes have crashed.
+\end{itemize}
