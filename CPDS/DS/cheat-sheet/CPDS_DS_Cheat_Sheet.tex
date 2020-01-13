@@ -1,6 +1,6 @@
 \documentclass[a4paper, 10pt, twocolumn]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[a4paper, left=0.75cm, right=0.75cm, top=0.5cm, bottom=0.75cm, headsep=0.25cm, includehead]{geometry}
+\usepackage[a4paper, left=0.5cm, right=0.5cm, top=0.5cm, bottom=0.5cm, headsep=0.25cm, includehead]{geometry}
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{color}
@@ -35,6 +35,17 @@
         \item Otherwise finalize state of incoming channel.
     \end{itemize}
 
+    \textbf{Centralized Algorithm}
+
+    \begin{enumerate}
+        \item To enter the CS, a process sends \textbf{Request} to coordinator and waits for permission.
+        \item If no other process in the CS, coordinator sends \textbf{OK}.
+            Otherwise, it queues request (no answer).
+        \item Process sends \textbf{Release} to coordinator once it exits the CS.
+        \item Coordinator then grants access to first process in the queue with an \textbf{OK}.
+    \end{enumerate}
+    Problem if coordinator crashes (single point of failure).
+    Workaround: deny permission explicitly.
 
     \textbf{Lin's Voting Algorithm}
     
@@ -114,12 +125,23 @@
             \item Sender selects the largest proposal $N$ and multicasts it.
             \item Receiver $j$ updates $A_j$ and reorders messages in the queue.
         \end{enumerate}
-        \item \textbf{Causal:} delivered only if all causally preceedin messages have been delivered.
+        \item \textbf{Causal:} delivered only if all causally preceeding messages have been delivered.
         \begin{enumerate}
             \item $P_i$ increases $VC_i[i]$ only when sending a message.
             \item If $P_j$ receives $m$ from $P_i$ it postpones delivery until: $ts(m)[i] = VC_j[i] + 1$ and $ts(m)[k] \leq VC_j[k] \forall k \neq i$.
             \item $P_j$ increases $VC_j[i]$ after delivering $m$.
         \end{enumerate}
+    \end{itemize}
+
+    \textbf{Atomic Multicast (View-Synchronous Multicast)}
+
+    Solution for reliable multicasting in open groups with \textbf{faulty} processes.
+    Messages are delivered only to the current \textbf{non-faulty} members of the group.
+    \begin{itemize}
+        \item A membership service keeps members updated on who the current members are.
+        \item Send \textbf{view messages} of group membership in \textbf{total order}.
+        \item View changes when process enter/exit the group.
+        \item Each message is associated with a group view, and multicasts cannot pass across view changes.
     \end{itemize}
 
     \textbf{Dolev \& Strong's Consensus Algorithm}
@@ -161,20 +183,42 @@
         \end{enumerate}
         \item When transaction commits: server releases all locks.
     \end{enumerate}
+    Edge Chasing: to avoid distributed deadlocks.
+    Send a probe if a transaction is waiting for a lock held by another transactio nthat is also waiting for a lock.
 
     \textbf{Timestamp Ordering}
+
+    Each transaction has a unique timestamp assigned when the transaction \textbf{starts}.
     \begin{itemize}
+        \item \textbf{Each object}: W TS for latest commited value (and tentative ones) and R TS (latest, not commited)
         \item $T$ performs a \textbf{W} (creates new tentative version) if:
         \begin{itemize}
             \item $T \geq \text{ max. R TS} \quad \&\& $
-            \item $T \geq \text{ W TS on commited version}$.
+            \item $T > \text{ W TS on commited version}$.
+            \item $T$ is aborted if a transaction with a later timestamp has already read or written the object.
         \end{itemize}
-        \item $T$ performs a \textbf{R} if object last written by an earlier transaction.
+        \item $T$ performs a \textbf{R} if $T > $ W TS on committed version
         \begin{itemize}
-            \item Directed to version w/ maximum W TS.
+            \item Directed to version w/ maximum W TS (less than the transaction TS).
             \item If tentative TS, $T$ must wait.
+            \item Read is not valid if transaction with a later timestamp has already written (and committed) the object.
         \end{itemize}
     \end{itemize}
+
+    \textbf{Optimistic Concurrency Control}
+
+    \begin{enumerate}
+        \item \textbf{Working Phase:} transaction keeps a tentative version of each object it updates (read and write sets).
+            Read operations directed to tentative version (if exists) otherwise to committed one.
+            Write operations only to tentative versions.
+        \item \textbf{Validation Phase:} a transaction is given a sequence number when \textbf{entering the validation phase}.
+            Check for conflics with \textbf{overlapping transactions} (those not yet committed at the start of validation).
+            \begin{enumerate}
+                \item Backward validation: compare current read set, with write set of previously committed overlapping transactions.
+                    If conflict, abort \textbf{this} transaction.
+                \item Forward validation: compare current write set with overlapping active (not committed) transactions.
+            \end{enumerate}
+    \end{enumerate}
 
     \textbf{Two-Phase Commit Protocol (2PC)}
     \begin{enumerate}
@@ -209,7 +253,9 @@
         \item \textbf{Primary-Backup Remote-Write Protocols:}
         \begin{itemize}
             \item All writes done at a fixed replica, local reads.
-            \item Either blocking or non-blocking writes.
+            \item Either blocking or non-blocking writes (if non-blocking, update local copy).
+            \item If some replica failed during update, read-your-writes not guaranteed.
+            \item Implements linearizability if read requests forwarded to primary.
         \end{itemize}
         \item \textbf{Primary-Backup Local-Write Protocols:}
         \begin{itemize}
@@ -223,14 +269,18 @@
     Writes can be carried out at \textbf{multiple replicas}.
     \begin{itemize}
         \item \textbf{Active Replication:} each operation is forwarded to \textbf{all} replicas.
+            \begin{itemize}
+                \item Only writes if sequential consistency.
+                \item Reads and writes (can tolerate Byzantine failures) if linearizability.
+            \end{itemize}
         \item \textbf{Quorum-based:} permission from a quorum of $N$ replicas before either reading or writing.
         \begin{itemize}
-            \item Read quorum of $N_R$ replicas before reading.
-            \item Write quorum of $N_W$ replicas before writing.
+            \item Read quorum of $N_R$ replicas before reading: not all replicas need to be up-to date (read from an updated one).
+            \item Write quorum of $N_W$ replicas before writing: update replicas in quorum, remainng as background task.
         \end{itemize}
         \item $N_R + N_W > N$ to avoid read-write conflicts.
         \item $N_W > \frac{N}{2}$ to avoid write-write conflicts.
         \item Correct choice, read one, write all.
-        \item Read operations return the last value written.
+        \item Writes are serialized, reads return last value written.
     \end{itemize}
 \end{document}
