@@ -1,6 +1,6 @@
 \documentclass[a4paper, 10pt, twocolumn]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[a4paper, left=0.5cm, right=0.5cm, top=0.5cm, bottom=0.5cm, headsep=0.25cm, includehead]{geometry}
+\usepackage[a4paper, left=0.5cm, right=0.5cm, top=0.25cm, bottom=0.5cm, headsep=0.25cm, includehead]{geometry}
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{color}
@@ -69,6 +69,7 @@
     \end{enumerate}
     Variant (\textbf{Maekawa's Algorithm}): get permission to access CS by obtaining votes from a \textbf{subset} of the rest of the processes.
     All voting sets have the same size $K$, and each $p_i$ belongs to $M$ voting sets, and is ruled by just one (opt. at $K = M \simeq \sqrt{N}$).
+    When a process receives a \textbf{Request} if it is not accessing the CS and has \textbf{not} replied to any other vote, sends \textbf{OK}.
 
     \textbf{Bully Election Algorithm}
 
